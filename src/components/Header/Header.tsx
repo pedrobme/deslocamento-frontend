@@ -53,7 +53,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	},
 }));
 
-export default function HeaderComponent() {
+interface HeaderComponentInterface {
+	toggleColorMode: () => void;
+}
+
+export default function HeaderComponent({
+	toggleColorMode,
+}: HeaderComponentInterface) {
 	const [searchValue, setSearchValue] = React.useState("");
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +87,7 @@ export default function HeaderComponent() {
 					>
 						Deslocamento
 					</Typography>
-					<ThemeSwitch />
+					<ThemeSwitch toggleColorMode={toggleColorMode} />
 					<Search>
 						<SearchIconWrapper>
 							<SearchIcon />

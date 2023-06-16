@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
@@ -17,7 +17,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 			transform: "translateX(22px)",
 			"& .MuiSwitch-thumb:before": {
 				backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-					"#fff"
+					"#000"
 				)}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
 			},
 			"& + .MuiSwitch-track": {
@@ -27,7 +27,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 		},
 	},
 	"& .MuiSwitch-thumb": {
-		backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#001e3c",
+		backgroundColor: theme.palette.mode === "dark" ? "#bdbdbd" : "#111111",
 		width: 32,
 		height: 32,
 		"&:before": {
@@ -51,12 +51,20 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 	},
 }));
 
-export default function ThemeSwitch() {
+interface themeSwitcherInterface {
+	toggleColorMode: () => void;
+}
+
+export default function ThemeSwitch({
+	toggleColorMode,
+}: themeSwitcherInterface) {
+	const theme = useTheme();
 	return (
 		<FormGroup>
 			<FormControlLabel
 				control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
-				label="MUI switch"
+				label={`${theme.palette.mode} mode`}
+				onChange={toggleColorMode}
 			/>
 		</FormGroup>
 	);
