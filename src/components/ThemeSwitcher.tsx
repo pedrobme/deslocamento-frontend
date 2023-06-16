@@ -63,7 +63,7 @@ export default function ThemeSwitch({
 		<FormGroup>
 			<FormControlLabel
 				control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
-				label={`${theme.palette.mode} mode`}
+				label={""}
 				onChange={toggleColorMode}
 			/>
 		</FormGroup>

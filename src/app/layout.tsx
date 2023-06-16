@@ -1,13 +1,9 @@
 "use client";
-import {
-	useTheme,
-	ThemeProvider,
-	createTheme,
-	CssBaseline,
-} from "@mui/material";
+import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { Inter } from "next/font/google";
 import HeaderComponent from "@/components/Header/Header";
 import React from "react";
+import Container from "@mui/material/Container";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,16 +41,16 @@ export default function RootLayout({
 	);
 
 	return (
-		<html lang="pt-BR">
-			<CssBaseline />
-			<ColorModeContext.Provider value={colorMode}>
-				<ThemeProvider theme={theme}>
+		<ColorModeContext.Provider value={colorMode}>
+			<ThemeProvider theme={theme}>
+				<CssBaseline />
+				<html lang="pt-BR">
 					<body className={inter.className}>
 						<HeaderComponent toggleColorMode={colorMode.toggleColorMode} />
-						{children}
+						<Container maxWidth="lg">{children}</Container>
 					</body>
-				</ThemeProvider>
-			</ColorModeContext.Provider>
-		</html>
+				</html>
+			</ThemeProvider>
+		</ColorModeContext.Provider>
 	);
 }
