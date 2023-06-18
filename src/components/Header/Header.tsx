@@ -1,7 +1,6 @@
 "use client";
 import ThemeSwitch from "../ThemeSwitcher";
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,13 +12,18 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import Link from "next/link";
 
 interface HeaderComponentInterface {
 	toggleColorMode: () => void;
 }
 
-const pages = ["Cliente", "Condutor", "Desclocamento", "Previsão do tempo"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [
+	{ path: "/clients", menuTag: "clientes" },
+	{ path: "/drivers", menuTag: "condutores" },
+	{ path: "/displacements", menuTag: "deslocamentos" },
+	{ path: "/weather", menuTag: "previsão do tempo" },
+];
 
 export default function HeaderComponent({
 	toggleColorMode,
@@ -53,7 +57,7 @@ export default function HeaderComponent({
 	};
 
 	return (
-		<AppBar position="static">
+		<AppBar position="static" sx={{ marginBottom: "1rem" }}>
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
 					<AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -105,9 +109,11 @@ export default function HeaderComponent({
 							}}
 						>
 							{pages.map((page) => (
-								<MenuItem key={page} onClick={handleCloseNavMenu}>
-									<Typography textAlign="center">{page}</Typography>
-								</MenuItem>
+								<Link href={`${page.path}`}>
+									<MenuItem key={page.menuTag} onClick={handleCloseNavMenu}>
+										<Typography textAlign="center">{page.menuTag}</Typography>
+									</MenuItem>
+								</Link>
 							))}
 						</Menu>
 					</Box>
@@ -133,13 +139,15 @@ export default function HeaderComponent({
 					</Typography>
 					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
 						{pages.map((page) => (
-							<Button
-								key={page}
-								onClick={handleCloseNavMenu}
-								sx={{ my: 2, color: "white", display: "block" }}
-							>
-								{page}
-							</Button>
+							<Link href={`${page.path}`}>
+								<Button
+									key={page.menuTag}
+									onClick={handleCloseNavMenu}
+									sx={{ my: 2, color: "white", display: "block" }}
+								>
+									{page.menuTag}
+								</Button>
+							</Link>
 						))}
 					</Box>
 
