@@ -1,5 +1,7 @@
 "use client";
 import ClientsSummaryTable from "@/components/ClientsPageComponents/ClientsSummaryTable";
+import ClientsSummaryCardsView from "@/components/ClientsPageComponents/ClientSummaryCardsView";
+import HorizontalToggleButtons from "@/components/TablesComponents/DataViewTypeButtons";
 import {
 	Client,
 	ClientsSummaryColumns,
@@ -28,6 +30,7 @@ const columns: ClientsSummaryColumns = [
 
 const ClientsPage = () => {
 	const [clientsData, setClientsData] = React.useState<Client[]>([]);
+	const [viewType, setViewType] = React.useState("list");
 
 	React.useEffect(() => {
 		const fetchData = async () => {
@@ -60,11 +63,17 @@ const ClientsPage = () => {
 
 	return (
 		<>
-			<ClientsSummaryTable
-				clientsData={clientsData}
-				columns={columns}
-				rows={rows}
-			/>
+			<HorizontalToggleButtons viewType={viewType} setViewType={setViewType} />
+			{viewType === "list" && (
+				<ClientsSummaryTable
+					clientsData={clientsData}
+					columns={columns}
+					rows={rows}
+				/>
+			)}
+			{viewType === "cards" && (
+				<ClientsSummaryCardsView clientsData={clientsData} />
+			)}
 		</>
 	);
 };

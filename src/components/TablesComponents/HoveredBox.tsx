@@ -39,6 +39,10 @@ const HoverBox = ({
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave}
 				style={boxStyles}
+				display="flex"
+				flexDirection="column"
+				justifyContent="center"
+				alignItems="center"
 			>
 				<PersonIcon />
 				<Typography>Detalhes do cliente</Typography>
