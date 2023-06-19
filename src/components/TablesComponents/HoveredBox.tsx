@@ -41,7 +41,7 @@ const HoverBox = ({
 				style={boxStyles}
 			>
 				<PersonIcon />
-				<Typography>Client Details</Typography>
+				<Typography>Detalhes do cliente</Typography>
 			</Box>
 		</Link>
 	);
