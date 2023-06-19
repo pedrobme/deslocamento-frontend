@@ -13,49 +13,37 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
+import FixedBottomNavigation from "../BottomNavigationBar";
+import { NavigationOptions } from "@/types/NavigationOptions";
+import ThermostatIcon from "@mui/icons-material/Thermostat";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import DirectionsIcon from "@mui/icons-material/Directions";
+import PersonIcon from "@mui/icons-material/Person";
+import AirlineSeatReclineNormalIcon from "@mui/icons-material/AirlineSeatReclineNormal";
 
 interface HeaderComponentInterface {
 	toggleColorMode: () => void;
 }
 
-const pages = [
-	{ path: "/clients", menuTag: "clientes" },
-	{ path: "/drivers", menuTag: "condutores" },
-	{ path: "/displacements", menuTag: "deslocamentos" },
-	{ path: "/weather", menuTag: "previsão do tempo" },
+const pagesLabels: NavigationOptions = [
+	{ path: "/clients", menuTag: "clientes", icon: <PersonIcon /> },
+	{
+		path: "/drivers",
+		menuTag: "Condutores",
+		icon: <AirlineSeatReclineNormalIcon />,
+	},
+	{ path: "/vehicles", menuTag: "Veículos", icon: <DirectionsCarIcon /> },
+	{
+		path: "/displacements",
+		menuTag: "Deslocamentos",
+		icon: <DirectionsIcon />,
+	},
+	{ path: "/weather", menuTag: "Previsão do tempo", icon: <ThermostatIcon /> },
 ];
 
 export default function HeaderComponent({
 	toggleColorMode,
 }: HeaderComponentInterface) {
-	const [searchValue, setSearchValue] = React.useState("");
-
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchValue(event.target.value);
-	};
-
-	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-		null
-	);
-	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-		null
-	);
-
-	const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorElNav(event.currentTarget);
-	};
-	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorElUser(event.currentTarget);
-	};
-
-	const handleCloseNavMenu = () => {
-		setAnchorElNav(null);
-	};
-
-	const handleCloseUserMenu = () => {
-		setAnchorElUser(null);
-	};
-
 	return (
 		<AppBar position="static" sx={{ marginBottom: "1rem" }}>
 			<Container maxWidth="xl">
@@ -78,45 +66,6 @@ export default function HeaderComponent({
 					>
 						DESLOCAMENTO
 					</Typography>
-
-					<Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-						<IconButton
-							size="large"
-							aria-label="account of current user"
-							aria-controls="menu-appbar"
-							aria-haspopup="true"
-							onClick={handleOpenNavMenu}
-							color="inherit"
-						>
-							<MenuIcon />
-						</IconButton>
-						<Menu
-							id="menu-appbar"
-							anchorEl={anchorElNav}
-							anchorOrigin={{
-								vertical: "bottom",
-								horizontal: "left",
-							}}
-							keepMounted
-							transformOrigin={{
-								vertical: "top",
-								horizontal: "left",
-							}}
-							open={Boolean(anchorElNav)}
-							onClose={handleCloseNavMenu}
-							sx={{
-								display: { xs: "block", md: "none" },
-							}}
-						>
-							{pages.map((page) => (
-								<Link href={`${page.path}`}>
-									<MenuItem key={page.menuTag} onClick={handleCloseNavMenu}>
-										<Typography textAlign="center">{page.menuTag}</Typography>
-									</MenuItem>
-								</Link>
-							))}
-						</Menu>
-					</Box>
 					<AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
 					<Typography
 						variant="h5"
@@ -138,14 +87,13 @@ export default function HeaderComponent({
 						DESLOCAMENTO
 					</Typography>
 					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-						{pages.map((page) => (
-							<Link href={`${page.path}`}>
+						{pagesLabels.map((pageLabel) => (
+							<Link href={`${pageLabel.path}`}>
 								<Button
-									key={page.menuTag}
-									onClick={handleCloseNavMenu}
+									key={pageLabel.menuTag}
 									sx={{ my: 2, color: "white", display: "block" }}
 								>
-									{page.menuTag}
+									{pageLabel.menuTag}
 								</Button>
 							</Link>
 						))}

@@ -1,9 +1,10 @@
 "use client";
-import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import { ThemeProvider, createTheme, CssBaseline, Box } from "@mui/material";
 import { Inter } from "next/font/google";
 import HeaderComponent from "@/components/Header/Header";
 import React from "react";
 import Container from "@mui/material/Container";
+import FixedBottomNavigation from "@/components/BottomNavigationBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -48,6 +49,9 @@ export default function RootLayout({
 					<body className={inter.className}>
 						<HeaderComponent toggleColorMode={colorMode.toggleColorMode} />
 						<Container maxWidth="lg">{children}</Container>
+						<Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+							<FixedBottomNavigation />
+						</Box>
 					</body>
 				</html>
 			</ThemeProvider>

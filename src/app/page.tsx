@@ -10,8 +10,7 @@ export default function Home() {
 	return (
 		<Box
 			sx={{
-				bgcolor: theme.palette.mode === "dark" ? "#1d1d1d" : "#dbdbdb",
-				height: "85vh",
+				height: "80vh",
 				display: "flex",
 				flexDirection: "column",
 				justifyContent: "center",
@@ -24,23 +23,23 @@ export default function Home() {
 					gutterBottom
 					sx={{ display: { xs: "none", md: "initial" }, width: "50%" }}
 				>
-					Bem vindo a plataforma de controle da Deslocamento!
+					Bem vindo a plataforma de gestão da Deslocamento!
 				</Typography>
 			</Grow>
 			<Grow in={true}>
 				<Typography
-					variant="h4"
+					variant="h5"
 					textAlign="center"
 					gutterBottom
 					sx={{ display: { xs: "initial", md: "none" }, width: "50%" }}
 				>
-					Bem vindo a plataforma de controle da Deslocamento!
+					Bem vindo a plataforma de gestão da Deslocamento!
 				</Typography>
 			</Grow>
 			<Zoom in={true} style={{ transitionDelay: "500ms" }}>
 				<Typography variant="subtitle1" gutterBottom sx={{ width: "50%" }}>
-					Aqui você encontra, publica e altera qualquer informação relacionada a
-					clientes, condutores, veículos e muito mais.
+					Aqui você encontra, adiciona e atualiza qualquer informação
+					relacionada a clientes, condutores, veículos e muito mais.
 				</Typography>
 			</Zoom>
 		</Box>
