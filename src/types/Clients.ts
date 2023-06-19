@@ -18,6 +18,11 @@ export interface ClientSummary {
 	uf: string;
 }
 
+export type ClientWithoutDocuments = Omit<
+	Client,
+	"tipoDocumento" | "numeroDocumento"
+>;
+
 export interface ClientColumn {
 	id: "nome" | "uf" | "tipoDocumento" | "numeroDocumento";
 	label: string;

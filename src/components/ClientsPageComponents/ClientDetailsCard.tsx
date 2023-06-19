@@ -11,8 +11,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 export default function ClientDetailsCard({
+	setIsEditing,
 	clientData,
 }: {
+	setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 	clientData: Client | null;
 }) {
 	return (
@@ -81,7 +83,7 @@ export default function ClientDetailsCard({
 			</CardContent>
 			<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
 				<CardActions>
-					<Button size="small">
+					<Button onClick={() => setIsEditing(true)} size="small">
 						<EditIcon sx={{ marginRight: "5px" }} />
 						Edit
 					</Button>
