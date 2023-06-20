@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import { Client } from "@/types/Clients";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import HoverBox from "../TablesComponents/HoveredBox";
+import HoverBox from "../../TablesComponents/HoveredBox";
 
 export default function ClientSummaryCard({
 	clientsData,

@@ -2,8 +2,8 @@ import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TablePagination from "@mui/material/TablePagination";
-import { CustomScrollbarContainer } from "../TablesComponents/TableContainerWithCustomScrollbar";
-import ClientsSummaryTableHead from "./ClientsSummaryTableHead";
+import { CustomScrollbarContainer } from "../../TablesComponents/TableContainerWithCustomScrollbar";
+import ClientsSummaryTableHead from "../TableView/ClientsSummaryTableHead";
 import { Client } from "@/types/Clients";
 import ClientSummaryCard from "./ClientSummaryCard";
 
@@ -17,7 +17,7 @@ export default function ClientsSummaryCardsView({
 			<CustomScrollbarContainer
 				sx={{
 					display: "flex",
-					justifyContent: "space-between",
+					justifyContent: "center",
 					alignItems: "center",
 					flexWrap: "wrap",
 					minHeight: 440,

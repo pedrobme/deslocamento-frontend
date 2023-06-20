@@ -6,7 +6,7 @@ import {
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { TableBody } from "@mui/material";
-import HoverBox from "../TablesComponents/HoveredBox";
+import HoverBox from "../../TablesComponents/HoveredBox";
 
 const ClientsSummaryTableBody = ({
 	columns,

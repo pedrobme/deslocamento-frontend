@@ -2,7 +2,7 @@ import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TablePagination from "@mui/material/TablePagination";
-import { CustomScrollbarContainer } from "../TablesComponents/TableContainerWithCustomScrollbar";
+import { CustomScrollbarContainer } from "../../TablesComponents/TableContainerWithCustomScrollbar";
 import ClientsSummaryTableHead from "./ClientsSummaryTableHead";
 import {
 	Client,

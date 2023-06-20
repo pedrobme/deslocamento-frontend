@@ -1,6 +1,6 @@
 "use client";
-import ClientsSummaryTable from "@/components/ClientsPageComponents/ClientsSummaryTable";
-import ClientsSummaryCardsView from "@/components/ClientsPageComponents/ClientSummaryCardsView";
+import ClientsSummaryTable from "@/components/ClientsPageComponents/TableView/ClientsSummaryTable";
+import ClientsSummaryCardsView from "@/components/ClientsPageComponents/CardsView/ClientSummaryCardsView";
 import HorizontalToggleButtons from "@/components/TablesComponents/DataViewTypeButtons";
 import {
 	Client,
