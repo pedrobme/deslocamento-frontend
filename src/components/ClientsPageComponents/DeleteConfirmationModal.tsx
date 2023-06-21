@@ -22,10 +22,12 @@ export default function ClientDeletionModal({
 	open,
 	handleClose,
 	clientId,
+	setFailSnackbar,
 }: {
 	open: boolean;
 	handleClose: () => void;
 	clientId: number;
+	setFailSnackbar: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
 	const router = useRouter();
 	const deleteClientBody: AxiosRequestConfig<any> = {
@@ -43,6 +45,8 @@ export default function ClientDeletionModal({
 			router.push("/clients");
 		} catch (error) {
 			console.error("Error fetching data:", error);
+			handleClose();
+			setFailSnackbar(true);
 		}
 	};
 

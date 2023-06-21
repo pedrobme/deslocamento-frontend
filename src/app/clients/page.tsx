@@ -1,5 +1,4 @@
 "use client";
-import ClientsSummaryTable from "@/components/ClientsPageComponents/TableView/ClientsSummaryTable";
 import ClientsSummaryCardsView from "@/components/ClientsPageComponents/CardsView/ClientSummaryCardsView";
 import HorizontalToggleButtons from "@/components/TablesComponents/DataViewTypeButtons";
 import {
@@ -9,6 +8,13 @@ import {
 } from "@/types/Clients";
 import axios from "axios";
 import React from "react";
+import DynamicSummaryTable from "@/components/TablesComponents/DynamicTable/DynamicTableView";
+import { Box } from "@mui/system";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { Button, Typography } from "@mui/material";
+import CreateNewClientModal from "@/components/ClientsPageComponents/CreateNewClientModal";
+import CustomizedSnackbar from "@/components/CustomizedSnackBar";
+import Link from "next/link";
 
 const columns: ClientsSummaryColumns = [
 	{ id: "nome", label: "Nome", minWidth: 170, align: "center" },
@@ -63,15 +69,42 @@ const ClientsPage = () => {
 
 	return (
 		<>
-			<HorizontalToggleButtons viewType={viewType} setViewType={setViewType} />
-			{viewType === "list" && (
-				<ClientsSummaryTable
-					clientsData={clientsData}
-					columns={columns}
-					rows={rows}
+			<Box
+				sx={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "space-between",
+				}}
+			>
+				<HorizontalToggleButtons
+					viewType={viewType}
+					setViewType={setViewType}
 				/>
+				<Link href={"/clients/create"}>
+					<Button
+						variant="contained"
+						sx={{
+							display: "flex",
+							justifyContent: "space-between",
+							maxWidth: "180px",
+						}}
+					>
+						<AddCircleIcon />
+						<Typography sx={{ fontSize: "13px" }}>
+							Adicionar novo Cliente
+						</Typography>
+					</Button>
+				</Link>
+			</Box>
+
+			{clientsData.length === 0 && (
+				<h1>Não há clientes registrados no momento.</h1>
 			)}
-			{viewType === "cards" && (
+
+			{clientsData.length > 0 && viewType === "list" && (
+				<DynamicSummaryTable columns={columns} rows={rows} data={clientsData} />
+			)}
+			{clientsData.length > 0 && viewType === "cards" && (
 				<ClientsSummaryCardsView clientsData={clientsData} />
 			)}
 		</>

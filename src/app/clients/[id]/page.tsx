@@ -18,6 +18,7 @@ const ClientDetailsPage = () => {
 		cidade: "",
 		uf: "",
 	});
+
 	const [isEditing, setIsEditing] = React.useState(false);
 	const [successSnackbarIsOpen, setSuccessSnackbarIsOpen] =
 		React.useState(false);

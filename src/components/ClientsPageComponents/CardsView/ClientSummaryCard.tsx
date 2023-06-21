@@ -2,13 +2,9 @@ import * as React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Client } from "@/types/Clients";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import HoverBox from "../../TablesComponents/HoveredBox";
 
 export default function ClientSummaryCard({
@@ -50,7 +46,7 @@ export default function ClientSummaryCard({
 			</CardContent>
 			<Box sx={{ display: "flex", justifyContent: "center" }}>
 				<CardActions>
-					<HoverBox clientsData={clientsData} index={index} />
+					<HoverBox data={clientsData} index={index} />
 				</CardActions>
 			</Box>
 		</Card>

@@ -2,11 +2,18 @@ import { ClientsSummaryColumns } from "@/types/Clients";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
+import { DriversSummaryColumns } from "@/types/Drivers";
+import { VehiclesSummaryColumns } from "@/types/Vehicles";
+import { DisplacementsSummaryColumns } from "@/types/Displacements";
 
-const ClientsSummaryTableHead = ({
+const DynamicTableHead = ({
 	columns,
 }: {
-	columns: ClientsSummaryColumns;
+	columns:
+		| ClientsSummaryColumns
+		| DriversSummaryColumns
+		| VehiclesSummaryColumns
+		| DisplacementsSummaryColumns;
 }) => {
 	return (
 		<TableHead>
@@ -29,4 +36,4 @@ const ClientsSummaryTableHead = ({
 	);
 };
 
-export default ClientsSummaryTableHead;
+export default DynamicTableHead;

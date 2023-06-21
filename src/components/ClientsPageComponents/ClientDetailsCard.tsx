@@ -10,6 +10,7 @@ import { Client } from "@/types/Clients";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ClientDeletionModal from "./DeleteConfirmationModal";
+import CustomizedSnackbar from "../CustomizedSnackBar";
 
 export default function ClientDetailsCard({
 	setIsEditing,
@@ -21,6 +22,9 @@ export default function ClientDetailsCard({
 	const [openDeletionModal, setOpenDeletionModal] = React.useState(false);
 	const handleOpenDeletionModal = () => setOpenDeletionModal(true);
 	const handleCloseDeletionModal = () => setOpenDeletionModal(false);
+
+	const [failureDeleteSnackbarIsOpen, setFailureDeleteSnackbarIsOpen] =
+		React.useState(false);
 
 	return (
 		<>
@@ -106,6 +110,13 @@ export default function ClientDetailsCard({
 				open={openDeletionModal}
 				handleClose={handleCloseDeletionModal}
 				clientId={clientData.id}
+				setFailSnackbar={setFailureDeleteSnackbarIsOpen}
+			/>
+			<CustomizedSnackbar
+				severity="error"
+				message="Não foi possível deletar. Tente novamente mais tarde"
+				openState={failureDeleteSnackbarIsOpen}
+				setOpenState={setFailureDeleteSnackbarIsOpen}
 			/>
 		</>
 	);

@@ -2,24 +2,18 @@ import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TablePagination from "@mui/material/TablePagination";
-import { CustomScrollbarContainer } from "../../TablesComponents/TableContainerWithCustomScrollbar";
-import ClientsSummaryTableHead from "./ClientsSummaryTableHead";
-import {
-	Client,
-	ClientsSummaryColumns,
-	ClientsSummaryRows,
-} from "@/types/Clients";
-import ClientsSummaryTableBody from "./ClientSummaryTableBody";
+import { CustomScrollbarContainer } from "../TableContainerWithCustomScrollbar";
+import { Client } from "@/types/Clients";
+import DynamicTableHead from "./DynamicTableHead";
+import { DynamicSummaryTableProps } from "@/types/Tables";
+import DynamicTableBody from "./DynamicTableBody";
+import { Driver } from "@/types/Drivers";
+import { Vehicle } from "@/types/Vehicles";
+import { Displacement } from "@/types/Displacements";
 
-export default function ClientsSummaryTable({
-	columns,
-	rows,
-	clientsData,
-}: {
-	columns: ClientsSummaryColumns;
-	rows: ClientsSummaryRows;
-	clientsData: Client[];
-}) {
+export default function DynamicSummaryTable<
+	T extends Client[] | Driver[] | Vehicle[] | Displacement[]
+>({ columns, rows, data }: DynamicSummaryTableProps<T>) {
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -38,11 +32,11 @@ export default function ClientsSummaryTable({
 		<Paper elevation={4} sx={{ width: "100%", overflow: "hidden" }}>
 			<CustomScrollbarContainer sx={{ minHeight: 440, maxHeight: 440 }}>
 				<Table stickyHeader aria-label="sticky table">
-					<ClientsSummaryTableHead columns={columns} />
-					<ClientsSummaryTableBody
+					<DynamicTableHead columns={columns} />
+					<DynamicTableBody
 						columns={columns}
 						rows={rows}
-						clientsData={clientsData}
+						data={data}
 						page={page}
 						rowsPerPage={rowsPerPage}
 					/>

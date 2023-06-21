@@ -10,3 +10,15 @@ export interface DriverSummary {
 	nome: string;
 	summary: string;
 }
+
+export interface DriverColumn {
+	id: "nome" | "summary";
+	label: string;
+	minWidth?: number;
+	align?: "right" | "center";
+	format?: (value: number) => string;
+}
+
+export type DriversSummaryRows = DriverSummary[];
+
+export type DriversSummaryColumns = DriverColumn[];
