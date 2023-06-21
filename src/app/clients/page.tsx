@@ -80,7 +80,10 @@ const ClientsPage = () => {
 					viewType={viewType}
 					setViewType={setViewType}
 				/>
-				<Link href={"/clients/create"}>
+				<Link
+					href={"/clients/create"}
+					style={{ textDecoration: "none", color: "inherit" }}
+				>
 					<Button
 						variant="contained"
 						sx={{

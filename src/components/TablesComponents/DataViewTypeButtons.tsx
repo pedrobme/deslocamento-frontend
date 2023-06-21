@@ -15,8 +15,13 @@ export default function HorizontalToggleButtons({
 		event: React.MouseEvent<HTMLElement>,
 		nextView: string
 	) => {
-		setViewType(nextView);
+		if (!nextView) {
+			setViewType(viewType);
+		} else {
+			setViewType(nextView);
+		}
 	};
+	console.log(viewType);
 
 	return (
 		<ToggleButtonGroup
@@ -24,6 +29,7 @@ export default function HorizontalToggleButtons({
 			value={viewType}
 			exclusive
 			onChange={handleChange}
+			aria-label="toggle button group"
 			sx={{ mb: "10px" }}
 		>
 			<ToggleButton value="list" aria-label="list">

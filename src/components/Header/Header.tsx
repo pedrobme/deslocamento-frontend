@@ -88,7 +88,10 @@ export default function HeaderComponent({
 					</Typography>
 					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
 						{pagesLabels.map((pageLabel) => (
-							<Link href={`${pageLabel.path}`}>
+							<Link
+								href={`${pageLabel.path}`}
+								style={{ textDecoration: "none", color: "inherit" }}
+							>
 								<Button
 									key={pageLabel.menuTag}
 									sx={{ my: 2, color: "white", display: "block" }}
