@@ -14,7 +14,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 const NewClientPage = () => {
-	const [newClientData, setNewClientData] = React.useState<Omit<Client, "id">>({
+	const [newClientData, setNewClientData] = React.useState({
 		nome: "",
 		tipoDocumento: "",
 		numeroDocumento: "",
@@ -40,7 +40,7 @@ const NewClientPage = () => {
 	const createNewClient = async (newClientData: Omit<Client, "id">) => {
 		try {
 			const response = await axios.post(
-				`https://api-deslocamento.herokuapp.com/api/v1/Cliente`,
+				`https://api-deslocamento.herokuapp.com/api/v1/Deslocamento`,
 				newClientData
 			);
 

@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -9,8 +10,8 @@ import Box from "@mui/material/Box";
 import { Client } from "@/types/Clients";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Cancel";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const NewClientPage = () => {
 	const [newClientData, setNewClientData] = React.useState({
@@ -34,17 +35,19 @@ const NewClientPage = () => {
 		}));
 	};
 
+	const router = useRouter();
+
 	const createNewClient = async (newClientData: Omit<Client, "id">) => {
 		try {
 			const response = await axios.post(
-				`https://api-deslocamento.herokuapp.com/api/v1/Cliente`,
+				`https://api-deslocamento.herokuapp.com/api/v1/Veiculo`,
 				newClientData
 			);
 
-			setOpen(false);
+			router.push("/clients");
 		} catch (error) {
 			console.error("Error fetching data:", error);
-			setOpen(false);
+			router.push("/clients");
 		}
 	};
 
@@ -150,10 +153,6 @@ const NewClientPage = () => {
 						<Button onClick={() => createNewClient(newClientData)} size="small">
 							<SaveIcon sx={{ marginRight: "5px" }} />
 							Salvar
-						</Button>
-						<Button onClick={() => setOpen(false)} size="small">
-							<CancelIcon sx={{ marginRight: "5px" }} />
-							Cancelar
 						</Button>
 					</CardActions>
 				</Box>

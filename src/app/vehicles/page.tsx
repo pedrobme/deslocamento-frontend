@@ -12,6 +12,8 @@ import DynamicSummaryTable from "@/components/TablesComponents/DynamicTable/Dyna
 import { Box } from "@mui/system";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Button, Typography } from "@mui/material";
+import CreateNewClientModal from "@/components/ClientsPageComponents/CreateNewClientModal";
+import CustomizedSnackbar from "@/components/CustomizedSnackBar";
 import Link from "next/link";
 
 const columns: ClientsSummaryColumns = [
@@ -40,7 +42,7 @@ const ClientsPage = () => {
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(
-					"https://api-deslocamento.herokuapp.com/api/v1/Cliente"
+					"https://api-deslocamento.herokuapp.com/api/v1/Veiculo"
 				);
 				setClientsData(response.data);
 			} catch (error) {

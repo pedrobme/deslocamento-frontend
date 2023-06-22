@@ -42,7 +42,9 @@ const HoverBox = ({
 		setIsHovered(false);
 	};
 
-	return (
+	isClient(data[index]);
+
+	const ClientHoverBox = (
 		<Link
 			href={`/clients/${data[index].id}`}
 			style={{ textDecoration: "none", color: "inherit" }}
@@ -56,40 +58,79 @@ const HoverBox = ({
 				justifyContent="center"
 				alignItems="center"
 			>
-				{isClient(data[index]) && (
-					<>
-						<PersonIcon />
-						<Typography sx={{ fontSize: "13px" }}>
-							Detalhes do Cliente
-						</Typography>
-					</>
-				)}
-				{isDriver(data[index]) && (
-					<>
-						<AirlineSeatReclineNormalIcon />
-						<Typography sx={{ fontSize: "13px" }}>
-							Detalhes do Condutor
-						</Typography>
-					</>
-				)}
-				{isVehicle(data[index]) && (
-					<>
-						<DirectionsCarIcon />
-						<Typography sx={{ fontSize: "13px" }}>
-							Detalhes do Veículo
-						</Typography>
-					</>
-				)}
-				{isDisplacement(data[index]) && (
-					<>
-						<DirectionsIcon />
-						<Typography sx={{ fontSize: "13px" }}>
-							Detalhes do Deslocamento
-						</Typography>
-					</>
-				)}
+				<PersonIcon />
+				<Typography sx={{ fontSize: "13px" }}>Detalhes do Cliente</Typography>
 			</Box>
 		</Link>
+	);
+
+	const DriverHoverBox = (
+		<Link
+			href={`/drivers/${data[index].id}`}
+			style={{ textDecoration: "none", color: "inherit" }}
+		>
+			<Box
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
+				style={boxStyles}
+				display="flex"
+				flexDirection="column"
+				justifyContent="center"
+				alignItems="center"
+			>
+				<AirlineSeatReclineNormalIcon />
+				<Typography sx={{ fontSize: "13px" }}>Detalhes do Condutor</Typography>
+			</Box>
+		</Link>
+	);
+	const VehicleHoverBox = (
+		<Link
+			href={`/vehicles/${data[index].id}`}
+			style={{ textDecoration: "none", color: "inherit" }}
+		>
+			<Box
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
+				style={boxStyles}
+				display="flex"
+				flexDirection="column"
+				justifyContent="center"
+				alignItems="center"
+			>
+				<DirectionsCarIcon />
+				<Typography sx={{ fontSize: "13px" }}>Detalhes do Veículo</Typography>
+			</Box>
+		</Link>
+	);
+	const DisplacementHoverBox = (
+		<Link
+			href={`/displacements/${data[index].id}`}
+			style={{ textDecoration: "none", color: "inherit" }}
+		>
+			<Box
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
+				style={boxStyles}
+				display="flex"
+				flexDirection="column"
+				justifyContent="center"
+				alignItems="center"
+			>
+				<DirectionsIcon />
+				<Typography sx={{ fontSize: "13px" }}>
+					Detalhes do Deslocamento
+				</Typography>
+			</Box>
+		</Link>
+	);
+
+	return (
+		<>
+			{isClient(data[index]) && ClientHoverBox}
+			{isDriver(data[index]) && DriverHoverBox}
+			{isVehicle(data[index]) && VehicleHoverBox}
+			{isDisplacement(data[index]) && DisplacementHoverBox}
+		</>
 	);
 };
 

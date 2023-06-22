@@ -1,22 +1,18 @@
 "use client";
-import ClientDetailsCard from "@/components/ClientsPageComponents/ClientDetailsCard";
-import EditClientDetailsCard from "@/components/ClientsPageComponents/EditClientDetailsCard";
+import DriverDetailsCard from "@/components/DriversPageComponents/DriverDetailsCard";
+import EditDriverDetailsCard from "@/components/DriversPageComponents/EditDriverDetailsCard";
 import CustomizedSnackbar from "@/components/CustomizedSnackBar";
-import { Client } from "@/types/Clients";
+import { Driver } from "@/types/Drivers";
 import axios from "axios";
 import React from "react";
 
-const ClientDetailsPage = () => {
-	const [clientData, setClientData] = React.useState<Client>({
+const DriverDetailsPage = () => {
+	const [driverData, setDriverData] = React.useState<Driver>({
 		id: 0,
 		nome: "",
-		tipoDocumento: "",
-		numeroDocumento: "",
-		logradouro: "",
-		numero: "",
-		bairro: "",
-		cidade: "",
-		uf: "",
+		catergoriaHabilitacao: "",
+		numeroHabilitacao: "",
+		vencimentoHabilitacao: "",
 	});
 
 	const [isEditing, setIsEditing] = React.useState(false);
@@ -26,14 +22,14 @@ const ClientDetailsPage = () => {
 		React.useState(false);
 
 	React.useEffect(() => {
-		const clientId = window.location.pathname.split("/").pop();
+		const driverId = window.location.pathname.split("/").pop();
 
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(
-					`https://api-deslocamento.herokuapp.com/api/v1/Condutor/${clientId}`
+					`https://api-deslocamento.herokuapp.com/api/v1/Condutor/${driverId}`
 				);
-				setClientData(response.data);
+				setDriverData(response.data);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -44,9 +40,9 @@ const ClientDetailsPage = () => {
 
 	return isEditing ? (
 		<>
-			<EditClientDetailsCard
+			<EditDriverDetailsCard
 				setIsEditing={setIsEditing}
-				clientData={clientData}
+				driverData={driverData}
 				setSuccessSnackbarIsOpen={setSuccessSnackbarIsOpen}
 				setFailureSnackbarIsOpen={setFailureSnackbarIsOpen}
 			/>
@@ -59,10 +55,10 @@ const ClientDetailsPage = () => {
 		</>
 	) : (
 		<>
-			<ClientDetailsCard setIsEditing={setIsEditing} clientData={clientData} />
+			<DriverDetailsCard setIsEditing={setIsEditing} driverData={driverData} />
 			<CustomizedSnackbar
 				severity="success"
-				message="Cliente atualizado com sucesso!"
+				message="Condutor atualizado com sucesso!"
 				openState={successSnackbarIsOpen}
 				setOpenState={setSuccessSnackbarIsOpen}
 			/>
@@ -70,4 +66,4 @@ const ClientDetailsPage = () => {
 	);
 };
 
-export default ClientDetailsPage;
+export default DriverDetailsPage;

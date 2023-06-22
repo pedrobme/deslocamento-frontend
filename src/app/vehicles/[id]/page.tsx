@@ -31,7 +31,7 @@ const ClientDetailsPage = () => {
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(
-					`https://api-deslocamento.herokuapp.com/api/v1/Condutor/${clientId}`
+					`https://api-deslocamento.herokuapp.com/api/v1/Veiculo/${clientId}`
 				);
 				setClientData(response.data);
 			} catch (error) {

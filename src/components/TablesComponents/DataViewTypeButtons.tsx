@@ -21,7 +21,6 @@ export default function HorizontalToggleButtons({
 			setViewType(nextView);
 		}
 	};
-	console.log(viewType);
 
 	return (
 		<ToggleButtonGroup
