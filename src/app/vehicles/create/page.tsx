@@ -5,31 +5,28 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import { Client } from "@/types/Clients";
+import { Vehicle } from "@/types/Vehicles";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import SaveIcon from "@mui/icons-material/Save";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-const NewClientPage = () => {
-	const [newClientData, setNewClientData] = React.useState({
-		nome: "",
-		tipoDocumento: "",
-		numeroDocumento: "",
-		logradouro: "",
-		numero: "",
-		bairro: "",
-		cidade: "",
-		uf: "",
+const NewVehiclePage = () => {
+	const [newVehicleData, setNewVehicleData] = React.useState<
+		Omit<Vehicle, "id">
+	>({
+		placa: "",
+		marcaModelo: "",
+		anoFabricacao: 0,
+		kmAtual: 0,
 	});
 
 	const handleInputChange = (
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-		field: keyof Omit<Client, "id">
+		field: keyof Omit<Vehicle, "id">
 	) => {
-		setNewClientData((prevData) => ({
+		setNewVehicleData((prevData) => ({
 			...prevData,
 			[field]: event.target.value,
 		}));
@@ -37,17 +34,17 @@ const NewClientPage = () => {
 
 	const router = useRouter();
 
-	const createNewClient = async (newClientData: Omit<Client, "id">) => {
+	const createNewVehicle = async (newVehicleData: Omit<Vehicle, "id">) => {
 		try {
 			const response = await axios.post(
 				`https://api-deslocamento.herokuapp.com/api/v1/Veiculo`,
-				newClientData
+				newVehicleData
 			);
 
-			router.push("/clients");
+			router.push("/vehicles");
 		} catch (error) {
 			console.error("Error fetching data:", error);
-			router.push("/clients");
+			router.push("/vehicles");
 		}
 	};
 
@@ -60,97 +57,43 @@ const NewClientPage = () => {
 						color="text.secondary"
 						gutterBottom
 					>
-						Detalhes do cliente
+						Detalhes do veículo
 					</Typography>
 					<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
-						Nome:{" "}
+						Marca/Modelo:{" "}
 						<OutlinedInput
 							style={{ width: "fit-content", height: "40px" }}
-							onChange={(e) => handleInputChange(e, "nome")}
+							onChange={(e) => handleInputChange(e, "marcaModelo")}
 						></OutlinedInput>
 					</Typography>
 					<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
-						Tipo de documento:{" "}
+						Placa:{" "}
 						<OutlinedInput
 							style={{ width: "fit-content", height: "40px" }}
-							onChange={(e) => handleInputChange(e, "tipoDocumento")}
+							onChange={(e) => handleInputChange(e, "placa")}
 						></OutlinedInput>
 					</Typography>
 					<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
-						Número do documento:{" "}
+						Quilometragem:{" "}
 						<OutlinedInput
 							style={{ width: "fit-content", height: "40px" }}
-							onChange={(e) => handleInputChange(e, "numeroDocumento")}
+							onChange={(e) => handleInputChange(e, "kmAtual")}
 						></OutlinedInput>
 					</Typography>
-					<Paper elevation={8} sx={{ padding: "10px" }}>
-						<Typography
-							sx={{ fontSize: 14, mb: "10px", fontWeight: "800" }}
-							color="text.secondary"
-							gutterBottom
-						>
-							Endereço
-						</Typography>
-						<Typography
-							sx={{ fontSize: 14, mb: "10px" }}
-							color="text.secondary"
-							gutterBottom
-						>
-							Logradouro:{" "}
-							<OutlinedInput
-								style={{ width: "fit-content", height: "40px" }}
-								onChange={(e) => handleInputChange(e, "logradouro")}
-							></OutlinedInput>
-						</Typography>
-						<Typography
-							sx={{ fontSize: 14, mb: "10px" }}
-							color="text.secondary"
-							gutterBottom
-						>
-							Numero:{" "}
-							<OutlinedInput
-								style={{ width: "fit-content", height: "40px" }}
-								onChange={(e) => handleInputChange(e, "numero")}
-							></OutlinedInput>
-						</Typography>
-						<Typography
-							sx={{ fontSize: 14, mb: "10px" }}
-							color="text.secondary"
-							gutterBottom
-						>
-							Bairro:{" "}
-							<OutlinedInput
-								style={{ width: "fit-content", height: "40px" }}
-								onChange={(e) => handleInputChange(e, "bairro")}
-							></OutlinedInput>
-						</Typography>
-						<Typography
-							sx={{ fontSize: 14, mb: "10px" }}
-							color="text.secondary"
-							gutterBottom
-						>
-							Cidade:{" "}
-							<OutlinedInput
-								style={{ width: "fit-content", height: "40px" }}
-								onChange={(e) => handleInputChange(e, "cidade")}
-							></OutlinedInput>
-						</Typography>
-						<Typography
-							sx={{ fontSize: 14, mb: "10px" }}
-							color="text.secondary"
-							gutterBottom
-						>
-							UF:{" "}
-							<OutlinedInput
-								style={{ width: "fit-content", height: "40px" }}
-								onChange={(e) => handleInputChange(e, "uf")}
-							></OutlinedInput>
-						</Typography>
-					</Paper>
+					<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
+						Ano de fabricação:{" "}
+						<OutlinedInput
+							style={{ width: "fit-content", height: "40px" }}
+							onChange={(e) => handleInputChange(e, "anoFabricacao")}
+						></OutlinedInput>
+					</Typography>
 				</CardContent>
 				<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
 					<CardActions>
-						<Button onClick={() => createNewClient(newClientData)} size="small">
+						<Button
+							onClick={() => createNewVehicle(newVehicleData)}
+							size="small"
+						>
 							<SaveIcon sx={{ marginRight: "5px" }} />
 							Salvar
 						</Button>
@@ -161,4 +104,4 @@ const NewClientPage = () => {
 	);
 };
 
-export default NewClientPage;
+export default NewVehiclePage;

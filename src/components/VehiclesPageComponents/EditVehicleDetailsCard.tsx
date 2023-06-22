@@ -5,79 +5,48 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Driver, DriverEditObject } from "@/types/Drivers";
+import { Vehicle, VehicleEditObject } from "@/types/Vehicles";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import axios from "axios";
-import ResponsiveDateAndTimePickers from "../TimePicker";
-import dayjs from "dayjs";
 
-export default function EditDriverDetailsCard({
+export default function EditVehicleDetailsCard({
 	setIsEditing,
-	driverData,
+	vehicleData,
 	setSuccessSnackbarIsOpen,
 	setFailureSnackbarIsOpen,
 }: {
 	setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-	driverData: Driver;
+	vehicleData: Vehicle;
 	setSuccessSnackbarIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	setFailureSnackbarIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-	const { numeroHabilitacao, nome, ...requisitionBodyObject } = driverData;
+	const { placa, ...requisitionBodyObject } = vehicleData;
 
-	const [updatedDriverData, setUpdatedDriverData] = React.useState<
-		Omit<Driver, "nome" | "numeroHabilitacao">
+	const [updatedVehicleData, setUpdatedVehicleData] = React.useState<
+		Omit<Vehicle, "placa">
 	>(requisitionBodyObject);
-
-	const [dateAndTime, setDateAndTime] = React.useState({
-		date: new Date(requisitionBodyObject.vencimentoHabilitacao),
-		time: new Date(requisitionBodyObject.vencimentoHabilitacao),
-	});
 
 	const handleInputChange = (
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-		field: keyof DriverEditObject
+		field: keyof VehicleEditObject
 	) => {
-		setUpdatedDriverData((prevData) => ({
+		setUpdatedVehicleData((prevData) => ({
 			...prevData,
 			[field]: event.target.value,
 		}));
 	};
 
-	const handleDateAndTimeChange = (
-		event: dayjs.Dayjs | null,
-		field: "date" | "time"
-	) => {
-		setDateAndTime((prevData) => ({
-			...prevData,
-			[field]: event,
-		}));
-
-		const newDateAndTimeState = { ...dateAndTime, [field]: event };
-		const formattedDate = dayjs(newDateAndTimeState.date).format("YYYY-MM-DD");
-		const formattedTime = dayjs(newDateAndTimeState.time).format(
-			"HH:mm:ss.SSS"
-		);
-
-		const toLoadDateAndTime = `${formattedDate}T${formattedTime}Z`;
-		setUpdatedDriverData({
-			...updatedDriverData,
-			["vencimentoHabilitacao"]: toLoadDateAndTime,
-		});
-	};
-
-	const updateOneDriverById = async (id: number) => {
+	const updateOneVehicleById = async (id: number) => {
 		try {
 			const response = await axios.put(
-				`https://api-deslocamento.herokuapp.com/api/v1/Condutor/${id}`,
-				updatedDriverData
+				`https://api-deslocamento.herokuapp.com/api/v1/Veiculo/${id}`,
+				updatedVehicleData
 			);
 
 			setSuccessSnackbarIsOpen(true);
 			setIsEditing(false);
-
-			console.log(response);
 		} catch (error) {
 			console.error("Error fetching data:", error);
 			setFailureSnackbarIsOpen(true);
@@ -92,55 +61,46 @@ export default function EditDriverDetailsCard({
 					color="text.secondary"
 					gutterBottom
 				>
-					Detalhes do condutor
+					Detalhes do veículo
 				</Typography>
 				<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
-					Nome:{" "}
+					Marca/Modelo:{" "}
 					<OutlinedInput
 						style={{ width: "fit-content", height: "40px" }}
-						value={driverData?.nome}
+						onChange={(e) => handleInputChange(e, "marcaModelo")}
+						defaultValue={vehicleData?.marcaModelo}
+					></OutlinedInput>
+				</Typography>
+				<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
+					Placa:{" "}
+					<OutlinedInput
+						style={{ width: "fit-content", height: "40px" }}
+						value={vehicleData?.placa}
 						disabled={true}
 					></OutlinedInput>
 				</Typography>
 				<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
-					Categoria da habilitação:{" "}
+					Quilometragem:{" "}
 					<OutlinedInput
 						style={{ width: "fit-content", height: "40px" }}
-						onChange={(e) => handleInputChange(e, "catergoriaHabilitacao")}
-						defaultValue={driverData?.catergoriaHabilitacao}
-						disabled={true}
+						onChange={(e) => handleInputChange(e, "kmAtual")}
+						defaultValue={vehicleData?.kmAtual}
 					></OutlinedInput>
 				</Typography>
 				<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
-					Número da habilitação:{" "}
+					Ano de fabricação:{" "}
 					<OutlinedInput
 						style={{ width: "fit-content", height: "40px" }}
-						value={driverData?.numeroHabilitacao}
-						disabled={true}
+						onChange={(e) => handleInputChange(e, "anoFabricacao")}
+						defaultValue={vehicleData?.anoFabricacao}
 					></OutlinedInput>
-				</Typography>
-				<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
-					Data de vencimento:{" "}
-					<ResponsiveDateAndTimePickers
-						type={"date"}
-						handleDateAndTimeChange={handleDateAndTimeChange}
-						defaultValue={dateAndTime?.date}
-					/>
-				</Typography>
-				<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
-					Horário de vencimento:{" "}
-					<ResponsiveDateAndTimePickers
-						type={"time"}
-						handleDateAndTimeChange={handleDateAndTimeChange}
-						defaultValue={dateAndTime?.date}
-					/>
 				</Typography>
 			</CardContent>
 			<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
 				<CardActions>
 					<Button
 						onClick={() =>
-							updateOneDriverById(driverData?.id ? driverData.id : 0)
+							updateOneVehicleById(vehicleData?.id ? vehicleData.id : 0)
 						}
 						size="small"
 					>

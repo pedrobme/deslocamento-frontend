@@ -11,6 +11,13 @@ export interface VehicleSummary {
 	marcaModelo: string;
 }
 
+export interface VehicleEditObject {
+	id: number;
+	marcaModelo: string;
+	anoFabricacao: number;
+	kmAtual: number;
+}
+
 export interface VehicleColumn {
 	id: "placa" | "marcaModelo";
 	label: string;

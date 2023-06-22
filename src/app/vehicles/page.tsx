@@ -1,41 +1,26 @@
 "use client";
-import ClientsSummaryCardsView from "@/components/ClientsPageComponents/CardsView/ClientSummaryCardsView";
+import VehiclesSummaryCardsView from "@/components/VehiclesPageComponents/CardsView/VehicleSummaryCardsView";
 import HorizontalToggleButtons from "@/components/TablesComponents/DataViewTypeButtons";
 import {
-	Client,
-	ClientsSummaryColumns,
-	ClientsSummaryRows,
-} from "@/types/Clients";
+	Vehicle,
+	VehiclesSummaryColumns,
+	VehiclesSummaryRows,
+} from "@/types/Vehicles";
 import axios from "axios";
 import React from "react";
 import DynamicSummaryTable from "@/components/TablesComponents/DynamicTable/DynamicTableView";
 import { Box } from "@mui/system";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Button, Typography } from "@mui/material";
-import CreateNewClientModal from "@/components/ClientsPageComponents/CreateNewClientModal";
-import CustomizedSnackbar from "@/components/CustomizedSnackBar";
 import Link from "next/link";
 
-const columns: ClientsSummaryColumns = [
-	{ id: "nome", label: "Nome", minWidth: 170, align: "center" },
-	{ id: "uf", label: "UF", minWidth: 100, align: "center" },
-	{
-		id: "tipoDocumento",
-		label: "Tipo\u00a0de\u00a0Documento",
-		minWidth: 170,
-		align: "center",
-	},
-	{
-		id: "numeroDocumento",
-		label: "Numero\u00a0do\u00a0Documento",
-		minWidth: 170,
-		align: "center",
-		format: (value: number) => value.toString(),
-	},
+const columns: VehiclesSummaryColumns = [
+	{ id: "marcaModelo", label: "Marca/Modelo", minWidth: 100, align: "center" },
+	{ id: "placa", label: "Placa", minWidth: 170, align: "center" },
 ];
 
-const ClientsPage = () => {
-	const [clientsData, setClientsData] = React.useState<Client[]>([]);
+const VehiclesPage = () => {
+	const [vehiclesData, setVehiclesData] = React.useState<Vehicle[]>([]);
 	const [viewType, setViewType] = React.useState("list");
 
 	React.useEffect(() => {
@@ -44,7 +29,7 @@ const ClientsPage = () => {
 				const response = await axios.get(
 					"https://api-deslocamento.herokuapp.com/api/v1/Veiculo"
 				);
-				setClientsData(response.data);
+				setVehiclesData(response.data);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -53,19 +38,16 @@ const ClientsPage = () => {
 		fetchData();
 	}, []);
 
-	const transformedClientsData: ClientsSummaryRows = clientsData.map(
-		(clientObj) => {
+	const transformedVehiclesData: VehiclesSummaryRows = vehiclesData.map(
+		(vehicleObj) => {
 			return {
-				id: clientObj.id,
-				numeroDocumento: clientObj.nome,
-				tipoDocumento: clientObj.tipoDocumento,
-				nome: clientObj.nome,
-				uf: clientObj.uf,
+				placa: vehicleObj.placa,
+				marcaModelo: vehicleObj.marcaModelo,
 			};
 		}
 	);
 
-	const rows: ClientsSummaryRows = transformedClientsData;
+	const rows: VehiclesSummaryRows = transformedVehiclesData;
 
 	return (
 		<>
@@ -81,7 +63,7 @@ const ClientsPage = () => {
 					setViewType={setViewType}
 				/>
 				<Link
-					href={"/clients/create"}
+					href={"/vehicles/create"}
 					style={{ textDecoration: "none", color: "inherit" }}
 				>
 					<Button
@@ -94,24 +76,28 @@ const ClientsPage = () => {
 					>
 						<AddCircleIcon />
 						<Typography sx={{ fontSize: "13px" }}>
-							Adicionar novo Cliente
+							Adicionar novo Veículo
 						</Typography>
 					</Button>
 				</Link>
 			</Box>
 
-			{clientsData.length === 0 && (
-				<h1>Não há clientes registrados no momento.</h1>
+			{vehiclesData.length === 0 && (
+				<h1>Não há veículos registrados no momento.</h1>
 			)}
 
-			{clientsData.length > 0 && viewType === "list" && (
-				<DynamicSummaryTable columns={columns} rows={rows} data={clientsData} />
+			{vehiclesData.length > 0 && viewType === "list" && (
+				<DynamicSummaryTable
+					columns={columns}
+					rows={rows}
+					data={vehiclesData}
+				/>
 			)}
-			{clientsData.length > 0 && viewType === "cards" && (
-				<ClientsSummaryCardsView clientsData={clientsData} />
+			{vehiclesData.length > 0 && viewType === "cards" && (
+				<VehiclesSummaryCardsView vehiclesData={vehiclesData} />
 			)}
 		</>
 	);
 };
 
-export default ClientsPage;
+export default VehiclesPage;

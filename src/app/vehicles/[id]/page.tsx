@@ -1,22 +1,18 @@
 "use client";
-import ClientDetailsCard from "@/components/ClientsPageComponents/ClientDetailsCard";
-import EditClientDetailsCard from "@/components/ClientsPageComponents/EditClientDetailsCard";
+import VehicleDetailsCard from "@/components/VehiclesPageComponents/VehicleDetailsCard";
+import EditVehicleDetailsCard from "@/components/VehiclesPageComponents/EditVehicleDetailsCard";
 import CustomizedSnackbar from "@/components/CustomizedSnackBar";
-import { Client } from "@/types/Clients";
+import { Vehicle } from "@/types/Vehicles";
 import axios from "axios";
 import React from "react";
 
-const ClientDetailsPage = () => {
-	const [clientData, setClientData] = React.useState<Client>({
+const VehicleDetailsPage = () => {
+	const [vehicleData, setVehicleData] = React.useState<Vehicle>({
 		id: 0,
-		nome: "",
-		tipoDocumento: "",
-		numeroDocumento: "",
-		logradouro: "",
-		numero: "",
-		bairro: "",
-		cidade: "",
-		uf: "",
+		anoFabricacao: 0,
+		kmAtual: 0,
+		marcaModelo: "",
+		placa: "",
 	});
 
 	const [isEditing, setIsEditing] = React.useState(false);
@@ -26,14 +22,14 @@ const ClientDetailsPage = () => {
 		React.useState(false);
 
 	React.useEffect(() => {
-		const clientId = window.location.pathname.split("/").pop();
+		const vehicleId = window.location.pathname.split("/").pop();
 
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(
-					`https://api-deslocamento.herokuapp.com/api/v1/Veiculo/${clientId}`
+					`https://api-deslocamento.herokuapp.com/api/v1/Veiculo/${vehicleId}`
 				);
-				setClientData(response.data);
+				setVehicleData(response.data);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -44,9 +40,9 @@ const ClientDetailsPage = () => {
 
 	return isEditing ? (
 		<>
-			<EditClientDetailsCard
+			<EditVehicleDetailsCard
 				setIsEditing={setIsEditing}
-				clientData={clientData}
+				vehicleData={vehicleData}
 				setSuccessSnackbarIsOpen={setSuccessSnackbarIsOpen}
 				setFailureSnackbarIsOpen={setFailureSnackbarIsOpen}
 			/>
@@ -59,10 +55,13 @@ const ClientDetailsPage = () => {
 		</>
 	) : (
 		<>
-			<ClientDetailsCard setIsEditing={setIsEditing} clientData={clientData} />
+			<VehicleDetailsCard
+				setIsEditing={setIsEditing}
+				vehicleData={vehicleData}
+			/>
 			<CustomizedSnackbar
 				severity="success"
-				message="Cliente atualizado com sucesso!"
+				message="Vehiclee atualizado com sucesso!"
 				openState={successSnackbarIsOpen}
 				setOpenState={setSuccessSnackbarIsOpen}
 			/>
@@ -70,4 +69,4 @@ const ClientDetailsPage = () => {
 	);
 };
 
-export default ClientDetailsPage;
+export default VehicleDetailsPage;
