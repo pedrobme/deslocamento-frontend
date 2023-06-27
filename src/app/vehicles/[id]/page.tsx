@@ -2,6 +2,8 @@
 import VehicleDetailsCard from "@/components/VehiclesPageComponents/VehicleDetailsCard";
 import EditVehicleDetailsCard from "@/components/VehiclesPageComponents/EditVehicleDetailsCard";
 import CustomizedSnackbar from "@/components/CustomizedSnackBar";
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 import { Vehicle } from "@/types/Vehicles";
 import axios from "axios";
 import React from "react";
@@ -21,6 +23,9 @@ const VehicleDetailsPage = () => {
 		React.useState(false);
 	const [failureSnackbarIsOpen, setFailureSnackbarIsOpen] =
 		React.useState(false);
+
+	const [isFetching, setIsFetching] = React.useState(true);
+
 	const params = useParams();
 
 	React.useEffect(() => {
@@ -32,6 +37,7 @@ const VehicleDetailsPage = () => {
 					`https://api-deslocamento.herokuapp.com/api/v1/Veiculo/${vehicleId}`
 				);
 				setVehicleData(response.data);
+				setIsFetching(false);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -55,6 +61,22 @@ const VehicleDetailsPage = () => {
 				setOpenState={setFailureSnackbarIsOpen}
 			/>
 		</>
+	) : isFetching ? (
+		<Box
+			sx={{
+				height: "100%",
+				width: "100%",
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+			}}
+		>
+			<Skeleton
+				sx={{ width: "30%", height: "300px" }}
+				animation="wave"
+				variant="rectangular"
+			/>
+		</Box>
 	) : (
 		<>
 			<VehicleDetailsCard

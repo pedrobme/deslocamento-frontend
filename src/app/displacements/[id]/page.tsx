@@ -2,6 +2,8 @@
 import DisplacementDetailsCard from "@/components/DisplacementsPageComponents/DisplacementDetailsCard";
 import EditDisplacementDetailsCard from "@/components/DisplacementsPageComponents/EditDisplacementDetailsCard";
 import CustomizedSnackbar from "@/components/CustomizedSnackBar";
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 import { Displacement, TransformedDisplacement } from "@/types/Displacements";
 import axios from "axios";
 import React from "react";
@@ -40,6 +42,8 @@ const DisplacementDetailsPage = () => {
 		[id: number]: string;
 	}>({});
 
+	const [isFetching, setIsFetching] = React.useState(true);
+
 	const params = useParams();
 
 	React.useEffect(() => {
@@ -73,6 +77,8 @@ const DisplacementDetailsPage = () => {
 					driversData.data,
 					vehiclesData.data
 				);
+
+				setIsFetching(false);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -147,6 +153,22 @@ const DisplacementDetailsPage = () => {
 				setOpenState={setFailureSnackbarIsOpen}
 			/>
 		</>
+	) : isFetching ? (
+		<Box
+			sx={{
+				height: "100%",
+				width: "100%",
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+			}}
+		>
+			<Skeleton
+				sx={{ width: "30%", height: "300px" }}
+				animation="wave"
+				variant="rectangular"
+			/>
+		</Box>
 	) : (
 		<>
 			<DisplacementDetailsCard

@@ -2,6 +2,8 @@
 import DriverDetailsCard from "@/components/DriversPageComponents/DriverDetailsCard";
 import EditDriverDetailsCard from "@/components/DriversPageComponents/EditDriverDetailsCard";
 import CustomizedSnackbar from "@/components/CustomizedSnackBar";
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 import { Driver } from "@/types/Drivers";
 import axios from "axios";
 import React from "react";
@@ -21,6 +23,9 @@ const DriverDetailsPage = () => {
 		React.useState(false);
 	const [failureSnackbarIsOpen, setFailureSnackbarIsOpen] =
 		React.useState(false);
+
+	const [isFetching, setIsFetching] = React.useState(true);
+
 	const params = useParams();
 
 	React.useEffect(() => {
@@ -32,6 +37,7 @@ const DriverDetailsPage = () => {
 					`https://api-deslocamento.herokuapp.com/api/v1/Condutor/${driverId}`
 				);
 				setDriverData(response.data);
+				setIsFetching(false);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -55,6 +61,22 @@ const DriverDetailsPage = () => {
 				setOpenState={setFailureSnackbarIsOpen}
 			/>
 		</>
+	) : isFetching ? (
+		<Box
+			sx={{
+				height: "100%",
+				width: "100%",
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+			}}
+		>
+			<Skeleton
+				sx={{ width: "30%", height: "300px" }}
+				animation="wave"
+				variant="rectangular"
+			/>
+		</Box>
 	) : (
 		<>
 			<DriverDetailsCard setIsEditing={setIsEditing} driverData={driverData} />

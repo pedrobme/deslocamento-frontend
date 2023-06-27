@@ -2,6 +2,8 @@
 import ClientDetailsCard from "@/components/ClientsPageComponents/ClientDetailsCard";
 import EditClientDetailsCard from "@/components/ClientsPageComponents/EditClientDetailsCard";
 import CustomizedSnackbar from "@/components/CustomizedSnackBar";
+import Skeleton from "@mui/material/Skeleton";
+import Box from "@mui/material/Box";
 import { Client } from "@/types/Clients";
 import axios from "axios";
 import { useParams } from "next/navigation";
@@ -25,6 +27,8 @@ const ClientDetailsPage = () => {
 		React.useState(false);
 	const [failureSnackbarIsOpen, setFailureSnackbarIsOpen] =
 		React.useState(false);
+
+	const [isFetching, setIsFetching] = React.useState(true);
 	const params = useParams();
 
 	React.useEffect(() => {
@@ -36,6 +40,7 @@ const ClientDetailsPage = () => {
 					`https://api-deslocamento.herokuapp.com/api/v1/Cliente/${clientId}`
 				);
 				setClientData(response.data);
+				setIsFetching(false);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -59,6 +64,22 @@ const ClientDetailsPage = () => {
 				setOpenState={setFailureSnackbarIsOpen}
 			/>
 		</>
+	) : isFetching ? (
+		<Box
+			sx={{
+				height: "100%",
+				width: "100%",
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+			}}
+		>
+			<Skeleton
+				sx={{ width: "30%", height: "300px" }}
+				animation="wave"
+				variant="rectangular"
+			/>
+		</Box>
 	) : (
 		<>
 			<ClientDetailsCard setIsEditing={setIsEditing} clientData={clientData} />
