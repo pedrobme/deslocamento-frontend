@@ -5,6 +5,7 @@ import CustomizedSnackbar from "@/components/CustomizedSnackBar";
 import { Driver } from "@/types/Drivers";
 import axios from "axios";
 import React from "react";
+import { useParams } from "next/navigation";
 
 const DriverDetailsPage = () => {
 	const [driverData, setDriverData] = React.useState<Driver>({
@@ -20,9 +21,10 @@ const DriverDetailsPage = () => {
 		React.useState(false);
 	const [failureSnackbarIsOpen, setFailureSnackbarIsOpen] =
 		React.useState(false);
+	const params = useParams();
 
 	React.useEffect(() => {
-		const driverId = window.location.pathname.split("/").pop();
+		const driverId = params.id;
 
 		const fetchData = async () => {
 			try {

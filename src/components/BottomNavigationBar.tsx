@@ -4,7 +4,7 @@ import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import Paper from "@mui/material/Paper";
 import { NavigationOptions } from "@/types/NavigationOptions";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import DirectionsIcon from "@mui/icons-material/Directions";
@@ -28,7 +28,8 @@ const pagesLabels: NavigationOptions = [
 ];
 
 export default function FixedBottomNavigation() {
-	const currentPage = window.location.pathname.split("/").pop();
+	const params = useParams();
+	const currentPage = params.id;
 	const currentPageIndex = pagesLabels.findIndex(
 		(page) => page.path === `/${currentPage}`
 	);

@@ -5,6 +5,7 @@ import CustomizedSnackbar from "@/components/CustomizedSnackBar";
 import { Vehicle } from "@/types/Vehicles";
 import axios from "axios";
 import React from "react";
+import { useParams } from "next/navigation";
 
 const VehicleDetailsPage = () => {
 	const [vehicleData, setVehicleData] = React.useState<Vehicle>({
@@ -20,9 +21,10 @@ const VehicleDetailsPage = () => {
 		React.useState(false);
 	const [failureSnackbarIsOpen, setFailureSnackbarIsOpen] =
 		React.useState(false);
+	const params = useParams();
 
 	React.useEffect(() => {
-		const vehicleId = window.location.pathname.split("/").pop();
+		const vehicleId = params.id;
 
 		const fetchData = async () => {
 			try {

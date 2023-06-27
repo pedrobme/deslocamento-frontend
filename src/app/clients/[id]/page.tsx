@@ -4,6 +4,7 @@ import EditClientDetailsCard from "@/components/ClientsPageComponents/EditClient
 import CustomizedSnackbar from "@/components/CustomizedSnackBar";
 import { Client } from "@/types/Clients";
 import axios from "axios";
+import { useParams } from "next/navigation";
 import React from "react";
 
 const ClientDetailsPage = () => {
@@ -24,9 +25,10 @@ const ClientDetailsPage = () => {
 		React.useState(false);
 	const [failureSnackbarIsOpen, setFailureSnackbarIsOpen] =
 		React.useState(false);
+	const params = useParams();
 
 	React.useEffect(() => {
-		const clientId = window.location.pathname.split("/").pop();
+		const clientId = params.id;
 
 		const fetchData = async () => {
 			try {

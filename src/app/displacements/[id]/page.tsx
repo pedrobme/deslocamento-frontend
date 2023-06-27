@@ -8,6 +8,7 @@ import React from "react";
 import { Client } from "@/types/Clients";
 import { Driver } from "@/types/Drivers";
 import { Vehicle } from "@/types/Vehicles";
+import { useParams } from "next/navigation";
 
 const DisplacementDetailsPage = () => {
 	const [displacementData, setDisplacementData] = React.useState<Displacement>({
@@ -39,8 +40,10 @@ const DisplacementDetailsPage = () => {
 		[id: number]: string;
 	}>({});
 
+	const params = useParams();
+
 	React.useEffect(() => {
-		const displacementId = window.location.pathname.split("/").pop();
+		const displacementId = params.id;
 
 		const fetchData = async () => {
 			try {
