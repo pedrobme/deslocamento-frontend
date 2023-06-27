@@ -77,12 +77,12 @@ export default function DisplacementEntriesSelectInput({
 	return (
 		<Box sx={{ minWidth: 120 }}>
 			<FormControl fullWidth>
-				<InputLabel id="demo-simple-select-label">Age</InputLabel>
+				<InputLabel id="demo-simple-select-label">{label}</InputLabel>
 				<Select
 					labelId="demo-simple-select-label"
 					id="demo-simple-select"
 					value={selectedValue}
-					label="Age"
+					label={label}
 					onChange={handleChange}
 				>
 					{optionsArray.map((option, index) => (
