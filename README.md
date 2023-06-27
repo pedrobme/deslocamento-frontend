@@ -16,3 +16,5 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to acess the applcaition.
+
+Also, the external deploy is available at: [https://deslocamento-frontend-phs.vercel.app/](https://deslocamento-frontend-phs.vercel.app/)
