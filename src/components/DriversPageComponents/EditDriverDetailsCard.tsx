@@ -76,8 +76,6 @@ export default function EditDriverDetailsCard({
 
 			setSuccessSnackbarIsOpen(true);
 			setIsEditing(false);
-
-			console.log(response);
 		} catch (error) {
 			console.error("Error fetching data:", error);
 			setFailureSnackbarIsOpen(true);

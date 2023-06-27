@@ -63,7 +63,6 @@ const NewDriverPage = () => {
 		try {
 			let { catergoriaHabilitacao, ...newDriverBody } = newDriverData;
 			newDriverBody.categoriaHabilitacao = catergoriaHabilitacao;
-			console.log("novoojb", newDriverData);
 
 			const response = await axios.post(
 				`https://api-deslocamento.herokuapp.com/api/v1/Condutor`,

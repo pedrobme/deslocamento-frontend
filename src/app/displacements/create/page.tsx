@@ -41,10 +41,6 @@ const NewDisplacementPage = () => {
 
 	const [dateAndTime, setDateAndTime] = React.useState({ date: "", time: "" });
 
-	console.log(entriesArrays);
-	console.log(newDisplacementData);
-	console.log(dateAndTime);
-
 	const handleInputChange = (
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
 		field: keyof Omit<Displacement, "id">

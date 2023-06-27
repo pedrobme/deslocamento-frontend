@@ -56,8 +56,6 @@ const DriversPage = () => {
 		}
 	);
 
-	console.log(driversData);
-
 	const rows: DriversSummaryRows = transformedDriversData;
 
 	return isFetchingData ? (
