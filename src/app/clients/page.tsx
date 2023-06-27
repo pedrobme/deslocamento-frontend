@@ -12,6 +12,7 @@ import DynamicSummaryTable from "@/components/TablesComponents/DynamicTable/Dyna
 import { Box } from "@mui/system";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Button, Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import Link from "next/link";
 
 const columns: ClientsSummaryColumns = [
@@ -35,6 +36,7 @@ const columns: ClientsSummaryColumns = [
 const ClientsPage = () => {
 	const [clientsData, setClientsData] = React.useState<Client[]>([]);
 	const [viewType, setViewType] = React.useState("list");
+	const [isFetchingData, setIsFetchingData] = React.useState(true);
 
 	React.useEffect(() => {
 		const fetchData = async () => {
@@ -43,6 +45,7 @@ const ClientsPage = () => {
 					"https://api-deslocamento.herokuapp.com/api/v1/Cliente"
 				);
 				setClientsData(response.data);
+				setIsFetchingData(false);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -65,7 +68,17 @@ const ClientsPage = () => {
 
 	const rows: ClientsSummaryRows = transformedClientsData;
 
-	return (
+	return isFetchingData ? (
+		<Box
+			sx={{
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+			}}
+		>
+			<CircularProgress />
+		</Box>
+	) : (
 		<>
 			<Box
 				sx={{

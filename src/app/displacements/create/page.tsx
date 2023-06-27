@@ -180,6 +180,7 @@ const NewDisplacementPage = () => {
 							defaultValue={new Date()}
 							type={"date"}
 							handleDateAndTimeChange={handleDateAndTimeChange}
+							minDate={new Date()}
 						/>
 					</Typography>
 					<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
@@ -188,6 +189,7 @@ const NewDisplacementPage = () => {
 							defaultValue={new Date()}
 							type={"time"}
 							handleDateAndTimeChange={handleDateAndTimeChange}
+							minDate={new Date()}
 						/>
 					</Typography>
 					<Typography variant="h5" component="div" sx={{ mb: "20px" }}>

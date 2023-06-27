@@ -154,6 +154,7 @@ export default function EditDisplacementDetailsCard({
 							type={"date"}
 							handleDateAndTimeChange={handleDateAndTimeChange}
 							defaultValue={new Date()}
+							minDate={new Date()}
 						/>
 					</Typography>
 					<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
@@ -162,6 +163,7 @@ export default function EditDisplacementDetailsCard({
 							type={"time"}
 							handleDateAndTimeChange={handleDateAndTimeChange}
 							defaultValue={new Date()}
+							minDate={new Date()}
 						/>
 					</Typography>
 					<Typography

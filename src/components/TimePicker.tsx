@@ -13,10 +13,12 @@ export default function ResponsiveDateAndTimePickers({
 	type,
 	handleDateAndTimeChange,
 	defaultValue,
+	minDate,
 }: {
 	type: "date" | "time";
 	handleDateAndTimeChange: (event: any, field: "date" | "time") => void;
 	defaultValue: Date;
+	minDate: Date;
 }) {
 	return (
 		<LocalizationProvider adapterLocale={ptBR} dateAdapter={AdapterDateFns}>
@@ -28,6 +30,8 @@ export default function ResponsiveDateAndTimePickers({
 			)}
 			{type === "date" && (
 				<DatePicker
+					minDate={minDate}
+					disablePast
 					format="dd/MM/yyyy"
 					defaultValue={defaultValue}
 					onChange={(e) => handleDateAndTimeChange(e, type)}

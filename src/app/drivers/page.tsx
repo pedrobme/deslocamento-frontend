@@ -6,6 +6,7 @@ import React from "react";
 import DynamicSummaryTable from "@/components/TablesComponents/DynamicTable/DynamicTableView";
 import { Box } from "@mui/system";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Button, Typography } from "@mui/material";
 import Link from "next/link";
 import {
@@ -27,6 +28,7 @@ const columns: DriversSummaryColumns = [
 const DriversPage = () => {
 	const [driversData, setDriversData] = React.useState<Driver[]>([]);
 	const [viewType, setViewType] = React.useState("list");
+	const [isFetchingData, setIsFetchingData] = React.useState(true);
 
 	React.useEffect(() => {
 		const fetchData = async () => {
@@ -35,6 +37,7 @@ const DriversPage = () => {
 					"https://api-deslocamento.herokuapp.com/api/v1/Condutor"
 				);
 				setDriversData(response.data);
+				setIsFetchingData(false);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -57,7 +60,17 @@ const DriversPage = () => {
 
 	const rows: DriversSummaryRows = transformedDriversData;
 
-	return (
+	return isFetchingData ? (
+		<Box
+			sx={{
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+			}}
+		>
+			<CircularProgress />
+		</Box>
+	) : (
 		<>
 			<Box
 				sx={{

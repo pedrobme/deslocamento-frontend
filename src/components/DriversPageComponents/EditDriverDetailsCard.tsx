@@ -84,6 +84,13 @@ export default function EditDriverDetailsCard({
 		}
 	};
 
+	const handleMinDate = () => {
+		const date = dayjs(driverData.vencimentoHabilitacao);
+		const updatedDate = date.add(1, "day");
+
+		return updatedDate.toDate();
+	};
+
 	return (
 		<Card sx={{ minWidth: 275, width: "fit-content", margin: "auto" }}>
 			<CardContent>
@@ -98,7 +105,7 @@ export default function EditDriverDetailsCard({
 					Nome:{" "}
 					<OutlinedInput
 						style={{ width: "fit-content", height: "40px" }}
-						value={driverData?.nome}
+						value={driverData.nome}
 						disabled={true}
 					></OutlinedInput>
 				</Typography>
@@ -107,7 +114,7 @@ export default function EditDriverDetailsCard({
 					<OutlinedInput
 						style={{ width: "fit-content", height: "40px" }}
 						onChange={(e) => handleInputChange(e, "catergoriaHabilitacao")}
-						defaultValue={driverData?.catergoriaHabilitacao}
+						defaultValue={driverData.catergoriaHabilitacao}
 						disabled={true}
 					></OutlinedInput>
 				</Typography>
@@ -115,7 +122,7 @@ export default function EditDriverDetailsCard({
 					Número da habilitação:{" "}
 					<OutlinedInput
 						style={{ width: "fit-content", height: "40px" }}
-						value={driverData?.numeroHabilitacao}
+						value={driverData.numeroHabilitacao}
 						disabled={true}
 					></OutlinedInput>
 				</Typography>
@@ -124,7 +131,8 @@ export default function EditDriverDetailsCard({
 					<ResponsiveDateAndTimePickers
 						type={"date"}
 						handleDateAndTimeChange={handleDateAndTimeChange}
-						defaultValue={dateAndTime?.date}
+						defaultValue={handleMinDate()}
+						minDate={handleMinDate()}
 					/>
 				</Typography>
 				<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
@@ -132,7 +140,8 @@ export default function EditDriverDetailsCard({
 					<ResponsiveDateAndTimePickers
 						type={"time"}
 						handleDateAndTimeChange={handleDateAndTimeChange}
-						defaultValue={dateAndTime?.date}
+						defaultValue={dateAndTime.date}
+						minDate={dateAndTime.time}
 					/>
 				</Typography>
 			</CardContent>
@@ -140,7 +149,7 @@ export default function EditDriverDetailsCard({
 				<CardActions>
 					<Button
 						onClick={() =>
-							updateOneDriverById(driverData?.id ? driverData.id : 0)
+							updateOneDriverById(driverData.id ? driverData.id : 0)
 						}
 						size="small"
 					>

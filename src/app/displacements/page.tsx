@@ -12,6 +12,7 @@ import React from "react";
 import DynamicSummaryTable from "@/components/TablesComponents/DynamicTable/DynamicTableView";
 import { Box } from "@mui/system";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Button, Typography } from "@mui/material";
 import Link from "next/link";
 import { Client } from "@/types/Clients";
@@ -56,6 +57,8 @@ const DisplacementsPage = () => {
 		[id: number]: string;
 	}>({});
 
+	const [isFetchingData, setIsFetchingData] = React.useState(true);
+
 	const [viewType, setViewType] = React.useState("list");
 
 	React.useEffect(() => {
@@ -88,6 +91,7 @@ const DisplacementsPage = () => {
 					driversData.data,
 					vehiclesData.data
 				);
+				setIsFetchingData(false);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -179,7 +183,17 @@ const DisplacementsPage = () => {
 
 	const rows: DisplacementsSummaryRows = transformedDisplacementsSummaryData;
 
-	return (
+	return isFetchingData ? (
+		<Box
+			sx={{
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+			}}
+		>
+			<CircularProgress />
+		</Box>
+	) : (
 		<>
 			<Box
 				sx={{

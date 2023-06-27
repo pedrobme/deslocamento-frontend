@@ -111,17 +111,19 @@ const NewDriverPage = () => {
 					<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
 						Data de vencimento:{" "}
 						<ResponsiveDateAndTimePickers
-							defaultValue={new Date(0)}
+							defaultValue={new Date()}
 							type={"date"}
 							handleDateAndTimeChange={handleDateAndTimeChange}
+							minDate={new Date()}
 						/>
 					</Typography>
 					<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
 						Horário de vencimento:{" "}
 						<ResponsiveDateAndTimePickers
-							defaultValue={new Date(0)}
+							defaultValue={new Date()}
 							type={"time"}
 							handleDateAndTimeChange={handleDateAndTimeChange}
+							minDate={new Date()}
 						/>
 					</Typography>
 				</CardContent>
