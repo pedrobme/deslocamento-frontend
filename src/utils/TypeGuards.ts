@@ -37,7 +37,9 @@ export function isVehicle(object: unknown): object is Vehicle {
 	);
 }
 
-export function isDisplacement(object: unknown): object is Displacement {
+export function isTransformedDisplacement(
+	object: unknown
+): object is Displacement {
 	return (
 		Object.prototype.hasOwnProperty.call(object, "id") &&
 		Object.prototype.hasOwnProperty.call(object, "kmInicial") &&
@@ -46,8 +48,8 @@ export function isDisplacement(object: unknown): object is Displacement {
 		Object.prototype.hasOwnProperty.call(object, "fimDeslocamento") &&
 		Object.prototype.hasOwnProperty.call(object, "motivo") &&
 		Object.prototype.hasOwnProperty.call(object, "observacao") &&
-		Object.prototype.hasOwnProperty.call(object, "idCondutor") &&
-		Object.prototype.hasOwnProperty.call(object, "idVeiculo") &&
-		Object.prototype.hasOwnProperty.call(object, "idDisplacemente")
+		Object.prototype.hasOwnProperty.call(object, "nomeCondutor") &&
+		Object.prototype.hasOwnProperty.call(object, "marcaModeloVeiculo") &&
+		Object.prototype.hasOwnProperty.call(object, "nomeCliente")
 	);
 }

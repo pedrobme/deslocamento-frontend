@@ -1,50 +1,93 @@
 "use client";
-import ClientsSummaryCardsView from "@/components/ClientsPageComponents/CardsView/ClientSummaryCardsView";
+import DisplacementsSummaryCardsView from "@/components/DisplacementsPageComponents/CardsView/DisplacementsSummaryCardsView";
 import HorizontalToggleButtons from "@/components/TablesComponents/DataViewTypeButtons";
 import {
-	Client,
-	ClientsSummaryColumns,
-	ClientsSummaryRows,
-} from "@/types/Clients";
+	Displacement,
+	DisplacementsSummaryColumns,
+	DisplacementsSummaryRows,
+	TransformedDisplacement,
+} from "@/types/Displacements";
 import axios from "axios";
 import React from "react";
 import DynamicSummaryTable from "@/components/TablesComponents/DynamicTable/DynamicTableView";
 import { Box } from "@mui/system";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Button, Typography } from "@mui/material";
-import CreateNewClientModal from "@/components/ClientsPageComponents/CreateNewClientModal";
-import CustomizedSnackbar from "@/components/CustomizedSnackBar";
 import Link from "next/link";
+import { Client } from "@/types/Clients";
+import { Driver } from "@/types/Drivers";
+import { Vehicle } from "@/types/Vehicles";
 
-const columns: ClientsSummaryColumns = [
-	{ id: "nome", label: "Nome", minWidth: 170, align: "center" },
-	{ id: "uf", label: "UF", minWidth: 100, align: "center" },
+const columns: DisplacementsSummaryColumns = [
+	{ id: "nomeCliente", label: "Cliente", minWidth: 170, align: "center" },
+	{ id: "nomeCondutor", label: "Condutor", minWidth: 100, align: "center" },
 	{
-		id: "tipoDocumento",
-		label: "Tipo\u00a0de\u00a0Documento",
+		id: "marcaModeloVeiculo",
+		label: "Marca/modelo do veículo",
 		minWidth: 170,
 		align: "center",
 	},
 	{
-		id: "numeroDocumento",
-		label: "Numero\u00a0do\u00a0Documento",
+		id: "inicioDeslocamento",
+		label: "Início do deslocamento",
+		minWidth: 170,
+		align: "center",
+	},
+	{
+		id: "fimDeslocamento",
+		label: "Fim do deslocamento",
 		minWidth: 170,
 		align: "center",
 		format: (value: number) => value.toString(),
 	},
 ];
 
-const ClientsPage = () => {
-	const [clientsData, setClientsData] = React.useState<Client[]>([]);
+const DisplacementsPage = () => {
+	const [displacementsData, setDisplacementsData] = React.useState<
+		Displacement[]
+	>([]);
+	const [clientsHashmap, setClientsHashmap] = React.useState<{
+		[id: number]: string;
+	}>({});
+	const [driversHashmap, setDriversHashmap] = React.useState<{
+		[id: number]: string;
+	}>({});
+	const [vehiclesHashmap, setVehiclesHashmap] = React.useState<{
+		[id: number]: string;
+	}>({});
+
 	const [viewType, setViewType] = React.useState("list");
 
 	React.useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await axios.get(
+				const responseDisplacement = axios.get(
 					"https://api-deslocamento.herokuapp.com/api/v1/Deslocamento"
 				);
-				setClientsData(response.data);
+				const responseClients = axios.get(
+					"https://api-deslocamento.herokuapp.com/api/v1/Cliente"
+				);
+				const responseDrivers = axios.get(
+					"https://api-deslocamento.herokuapp.com/api/v1/Condutor"
+				);
+				const responseVehicles = axios.get(
+					"https://api-deslocamento.herokuapp.com/api/v1/Veiculo"
+				);
+
+				const [displacementsData, clientsData, driversData, vehiclesData] =
+					await Promise.all([
+						responseDisplacement,
+						responseClients,
+						responseDrivers,
+						responseVehicles,
+					]);
+
+				setDisplacementsData(displacementsData.data);
+				createLookUpHashMaps(
+					clientsData.data,
+					driversData.data,
+					vehiclesData.data
+				);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -53,19 +96,88 @@ const ClientsPage = () => {
 		fetchData();
 	}, []);
 
-	const transformedClientsData: ClientsSummaryRows = clientsData.map(
-		(clientObj) => {
-			return {
-				id: clientObj.id,
-				numeroDocumento: clientObj.nome,
-				tipoDocumento: clientObj.tipoDocumento,
-				nome: clientObj.nome,
-				uf: clientObj.uf,
-			};
-		}
-	);
+	const createLookUpHashMaps = (
+		clientsData: Client[],
+		driversData: Driver[],
+		vehiclesData: Vehicle[]
+	) => {
+		const clientsLookup: { [id: number]: string } = {};
+		const driversLookup: { [id: number]: string } = {};
+		const vehiclesLookup: { [id: number]: string } = {};
 
-	const rows: ClientsSummaryRows = transformedClientsData;
+		clientsData.forEach((clientObj) => {
+			clientsLookup[clientObj.id] = clientObj.nome;
+		});
+
+		driversData.forEach((driverObj) => {
+			driversLookup[driverObj.id] = driverObj.nome;
+		});
+
+		vehiclesData.forEach((vehicleObj) => {
+			vehiclesLookup[vehicleObj.id] = vehicleObj.marcaModelo;
+		});
+
+		setClientsHashmap(clientsLookup);
+		setDriversHashmap(driversLookup);
+		setVehiclesHashmap(vehiclesLookup);
+	};
+
+	const TransformedDisplacementData: TransformedDisplacement[] =
+		displacementsData.map((displacementObj) => {
+			let nomeCliente = clientsHashmap[displacementObj.idCliente];
+			let nomeCondutor = driversHashmap[displacementObj.idCondutor];
+			let marcaModeloVeiculo = vehiclesHashmap[displacementObj.idVeiculo];
+
+			if (!nomeCliente) {
+				nomeCliente = "Cliente não encontrado";
+			}
+
+			if (!nomeCondutor) {
+				nomeCondutor = "Condutor não encontrado";
+			}
+
+			if (!marcaModeloVeiculo) {
+				marcaModeloVeiculo = "Veiculo não encontrado";
+			}
+
+			const { idCliente, idCondutor, idVeiculo, ...rest } = displacementObj;
+
+			return {
+				...rest,
+				nomeCondutor,
+				marcaModeloVeiculo,
+				nomeCliente,
+			};
+		});
+
+	const transformedDisplacementsSummaryData: DisplacementsSummaryRows =
+		displacementsData.map((displacementObj) => {
+			let nomeCliente = clientsHashmap[displacementObj.idCliente];
+			let nomeCondutor = driversHashmap[displacementObj.idCondutor];
+			let marcaModeloVeiculo = vehiclesHashmap[displacementObj.idVeiculo];
+
+			if (!nomeCliente) {
+				nomeCliente = "Cliente não encontrado";
+			}
+
+			if (!nomeCondutor) {
+				nomeCondutor = "Condutor não encontrado";
+			}
+
+			if (!marcaModeloVeiculo) {
+				marcaModeloVeiculo = "Veiculo não encontrado";
+			}
+
+			return {
+				inicioDeslocamento: displacementObj.inicioDeslocamento,
+				fimDeslocamento: displacementObj.fimDeslocamento,
+				nomeCondutor: nomeCondutor,
+				marcaModeloVeiculo: marcaModeloVeiculo,
+				nomeCliente: nomeCliente,
+			};
+		});
+
+	const rows: DisplacementsSummaryRows = transformedDisplacementsSummaryData;
 
 	return (
 		<>
@@ -81,7 +193,7 @@ const ClientsPage = () => {
 					setViewType={setViewType}
 				/>
 				<Link
-					href={"/clients/create"}
+					href={"/displacements/create"}
 					style={{ textDecoration: "none", color: "inherit" }}
 				>
 					<Button
@@ -94,24 +206,30 @@ const ClientsPage = () => {
 					>
 						<AddCircleIcon />
 						<Typography sx={{ fontSize: "13px" }}>
-							Adicionar novo Cliente
+							Adicionar novo Deslocamento
 						</Typography>
 					</Button>
 				</Link>
 			</Box>
 
-			{clientsData.length === 0 && (
-				<h1>Não há clientes registrados no momento.</h1>
+			{displacementsData.length === 0 && (
+				<h1>Não há deslocamentos registrados no momento.</h1>
 			)}
 
-			{clientsData.length > 0 && viewType === "list" && (
-				<DynamicSummaryTable columns={columns} rows={rows} data={clientsData} />
+			{displacementsData.length > 0 && viewType === "list" && (
+				<DynamicSummaryTable
+					columns={columns}
+					rows={rows}
+					data={TransformedDisplacementData}
+				/>
 			)}
-			{clientsData.length > 0 && viewType === "cards" && (
-				<ClientsSummaryCardsView clientsData={clientsData} />
+			{displacementsData.length > 0 && viewType === "cards" && (
+				<DisplacementsSummaryCardsView
+					displacementsData={TransformedDisplacementData}
+				/>
 			)}
 		</>
 	);
 };
 
-export default ClientsPage;
+export default DisplacementsPage;

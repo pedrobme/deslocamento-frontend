@@ -3,6 +3,7 @@ import {
 	Displacement,
 	DisplacementsSummaryColumns,
 	DisplacementsSummaryRows,
+	TransformedDisplacement,
 } from "./Displacements";
 import { Driver, DriversSummaryColumns, DriversSummaryRows } from "./Drivers";
 import {
@@ -66,7 +67,7 @@ export type DynamicSummaryTableProps<T> = T extends Client[]
 			rows: VehiclesSummaryRows;
 			data: T;
 	  }
-	: T extends Displacement[]
+	: T extends TransformedDisplacement[]
 	? {
 			columns: DisplacementsSummaryColumns;
 			rows: DisplacementsSummaryRows;
@@ -98,7 +99,7 @@ export type DynamicTableBodyProps<T> = T extends Client[]
 			page: number;
 			rowsPerPage: number;
 	  }
-	: T extends Displacement[]
+	: T extends TransformedDisplacement[]
 	? {
 			columns: DisplacementsSummaryColumns;
 			rows: DisplacementsSummaryRows;

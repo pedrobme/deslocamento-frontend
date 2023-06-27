@@ -111,6 +111,7 @@ const NewDriverPage = () => {
 					<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
 						Data de vencimento:{" "}
 						<ResponsiveDateAndTimePickers
+							defaultValue={new Date(0)}
 							type={"date"}
 							handleDateAndTimeChange={handleDateAndTimeChange}
 						/>
@@ -118,6 +119,7 @@ const NewDriverPage = () => {
 					<Typography variant="h5" component="div" sx={{ mb: "20px" }}>
 						Horário de vencimento:{" "}
 						<ResponsiveDateAndTimePickers
+							defaultValue={new Date(0)}
 							type={"time"}
 							handleDateAndTimeChange={handleDateAndTimeChange}
 						/>

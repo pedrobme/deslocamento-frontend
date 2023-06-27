@@ -22,10 +22,11 @@ import {
 	Displacement,
 	DisplacementsSummaryColumns,
 	DisplacementsSummaryRows,
+	TransformedDisplacement,
 } from "@/types/Displacements";
 
 export default function DynamicTableBody<
-	T extends Client[] | Driver[] | Vehicle[] | Displacement[]
+	T extends Client[] | Driver[] | Vehicle[] | TransformedDisplacement[]
 >({
 	columns,
 	rows,
@@ -61,6 +62,38 @@ export default function DynamicTableBody<
 									value = row[column.id as keyof typeof row];
 								} else {
 									value = "";
+								}
+
+								if (column.id === "inicioDeslocamento") {
+									const displacementInitialDateAndTime = new Date(value);
+									const toLoadInitialDate =
+										displacementInitialDateAndTime.toLocaleDateString("pt-BR");
+									const toLoadInitialTime =
+										displacementInitialDateAndTime.toLocaleTimeString("pt-BR");
+
+									return (
+										<TableCell key={column.id} align={column.align}>
+											{column.format && typeof value === "number"
+												? column.format(value)
+												: `${toLoadInitialDate} às ${toLoadInitialTime}`}
+										</TableCell>
+									);
+								}
+
+								if (column.id === "fimDeslocamento") {
+									const displacementFinalDateAndTime = new Date(value);
+									const toLoadFinalDate =
+										displacementFinalDateAndTime.toLocaleDateString("pt-BR");
+									const toLoadFinalTime =
+										displacementFinalDateAndTime.toLocaleTimeString("pt-BR");
+
+									return (
+										<TableCell key={column.id} align={column.align}>
+											{column.format && typeof value === "number"
+												? column.format(value)
+												: `${toLoadFinalDate} às ${toLoadFinalTime}`}
+										</TableCell>
+									);
 								}
 
 								return (

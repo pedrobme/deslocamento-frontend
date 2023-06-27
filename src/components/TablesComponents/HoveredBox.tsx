@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -5,11 +6,11 @@ import { Client } from "@/types/Clients";
 import Link from "next/link";
 import { Driver } from "@/types/Drivers";
 import { Vehicle } from "@/types/Vehicles";
-import { Displacement } from "@/types/Displacements";
+import { TransformedDisplacement } from "@/types/Displacements";
 import {
 	isClient,
-	isDisplacement,
 	isDriver,
+	isTransformedDisplacement,
 	isVehicle,
 } from "@/utils/TypeGuards";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
@@ -21,7 +22,7 @@ const HoverBox = ({
 	data,
 	index,
 }: {
-	data: Client[] | Driver[] | Vehicle[] | Displacement[];
+	data: Client[] | Driver[] | Vehicle[] | TransformedDisplacement[];
 	index: number;
 }) => {
 	const [isHovered, setIsHovered] = useState(false);
@@ -129,7 +130,7 @@ const HoverBox = ({
 			{isClient(data[index]) && ClientHoverBox}
 			{isDriver(data[index]) && DriverHoverBox}
 			{isVehicle(data[index]) && VehicleHoverBox}
-			{isDisplacement(data[index]) && DisplacementHoverBox}
+			{isTransformedDisplacement(data[index]) && DisplacementHoverBox}
 		</>
 	);
 };

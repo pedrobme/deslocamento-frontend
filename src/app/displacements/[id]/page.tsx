@@ -1,22 +1,27 @@
 "use client";
-import ClientDetailsCard from "@/components/ClientsPageComponents/ClientDetailsCard";
-import EditClientDetailsCard from "@/components/ClientsPageComponents/EditClientDetailsCard";
+import DisplacementDetailsCard from "@/components/DisplacementsPageComponents/DisplacementDetailsCard";
+import EditDisplacementDetailsCard from "@/components/DisplacementsPageComponents/EditDisplacementDetailsCard";
 import CustomizedSnackbar from "@/components/CustomizedSnackBar";
-import { Client } from "@/types/Clients";
+import { Displacement, TransformedDisplacement } from "@/types/Displacements";
 import axios from "axios";
 import React from "react";
+import { Client } from "@/types/Clients";
+import { Driver } from "@/types/Drivers";
+import { Vehicle } from "@/types/Vehicles";
 
-const ClientDetailsPage = () => {
-	const [clientData, setClientData] = React.useState<Client>({
+const DisplacementDetailsPage = () => {
+	const [displacementData, setDisplacementData] = React.useState<Displacement>({
 		id: 0,
-		nome: "",
-		tipoDocumento: "",
-		numeroDocumento: "",
-		logradouro: "",
-		numero: "",
-		bairro: "",
-		cidade: "",
-		uf: "",
+		checkList: "",
+		fimDeslocamento: "",
+		idCliente: 0,
+		idCondutor: 0,
+		idVeiculo: 0,
+		inicioDeslocamento: "",
+		kmFinal: 0,
+		kmInicial: 0,
+		motivo: "",
+		observacao: "",
 	});
 
 	const [isEditing, setIsEditing] = React.useState(false);
@@ -24,16 +29,47 @@ const ClientDetailsPage = () => {
 		React.useState(false);
 	const [failureSnackbarIsOpen, setFailureSnackbarIsOpen] =
 		React.useState(false);
+	const [clientsHashmap, setClientsHashmap] = React.useState<{
+		[id: number]: string;
+	}>({});
+	const [driversHashmap, setDriversHashmap] = React.useState<{
+		[id: number]: string;
+	}>({});
+	const [vehiclesHashmap, setVehiclesHashmap] = React.useState<{
+		[id: number]: string;
+	}>({});
 
 	React.useEffect(() => {
-		const clientId = window.location.pathname.split("/").pop();
+		const displacementId = window.location.pathname.split("/").pop();
 
 		const fetchData = async () => {
 			try {
-				const response = await axios.get(
-					`https://api-deslocamento.herokuapp.com/api/v1/Deslocamento/${clientId}`
+				const responseDisplacementById = axios.get(
+					`https://api-deslocamento.herokuapp.com/api/v1/Deslocamento/${displacementId}`
 				);
-				setClientData(response.data);
+				const responseClients = axios.get(
+					"https://api-deslocamento.herokuapp.com/api/v1/Cliente"
+				);
+				const responseDrivers = axios.get(
+					"https://api-deslocamento.herokuapp.com/api/v1/Condutor"
+				);
+				const responseVehicles = axios.get(
+					"https://api-deslocamento.herokuapp.com/api/v1/Veiculo"
+				);
+
+				const [displacementByIdData, clientsData, driversData, vehiclesData] =
+					await Promise.all([
+						responseDisplacementById,
+						responseClients,
+						responseDrivers,
+						responseVehicles,
+					]);
+				setDisplacementData(displacementByIdData.data);
+				createLookUpHashMaps(
+					clientsData.data,
+					driversData.data,
+					vehiclesData.data
+				);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -42,11 +78,62 @@ const ClientDetailsPage = () => {
 		fetchData();
 	}, [isEditing]);
 
+	const createLookUpHashMaps = (
+		clientsData: Client[],
+		driversData: Driver[],
+		vehiclesData: Vehicle[]
+	) => {
+		const clientsLookup: { [id: number]: string } = {};
+		const driversLookup: { [id: number]: string } = {};
+		const vehiclesLookup: { [id: number]: string } = {};
+
+		clientsData.forEach((clientObj) => {
+			clientsLookup[clientObj.id] = clientObj.nome;
+		});
+
+		driversData.forEach((driverObj) => {
+			driversLookup[driverObj.id] = driverObj.nome;
+		});
+
+		vehiclesData.forEach((vehicleObj) => {
+			vehiclesLookup[vehicleObj.id] = vehicleObj.marcaModelo;
+		});
+
+		setClientsHashmap(clientsLookup);
+		setDriversHashmap(driversLookup);
+		setVehiclesHashmap(vehiclesLookup);
+	};
+
+	let nomeCliente = clientsHashmap[displacementData.idCliente];
+	let nomeCondutor = driversHashmap[displacementData.idCondutor];
+	let marcaModeloVeiculo = vehiclesHashmap[displacementData.idVeiculo];
+
+	if (!nomeCliente) {
+		nomeCliente = "Cliente não encontrado";
+	}
+
+	if (!nomeCondutor) {
+		nomeCondutor = "Condutor não encontrado";
+	}
+
+	if (!marcaModeloVeiculo) {
+		marcaModeloVeiculo = "Veiculo não encontrado";
+	}
+
+	const { idCliente, idCondutor, idVeiculo, ...rest } = displacementData;
+
+	const transformedDisplacementData: TransformedDisplacement = {
+		...rest,
+		nomeCliente,
+		nomeCondutor,
+		marcaModeloVeiculo,
+	};
+
 	return isEditing ? (
 		<>
-			<EditClientDetailsCard
+			<EditDisplacementDetailsCard
 				setIsEditing={setIsEditing}
-				clientData={clientData}
+				displacementData={transformedDisplacementData}
 				setSuccessSnackbarIsOpen={setSuccessSnackbarIsOpen}
 				setFailureSnackbarIsOpen={setFailureSnackbarIsOpen}
 			/>
@@ -59,10 +146,13 @@ const ClientDetailsPage = () => {
 		</>
 	) : (
 		<>
-			<ClientDetailsCard setIsEditing={setIsEditing} clientData={clientData} />
+			<DisplacementDetailsCard
+				setIsEditing={setIsEditing}
+				displacementData={transformedDisplacementData}
+			/>
 			<CustomizedSnackbar
 				severity="success"
-				message="Cliente atualizado com sucesso!"
+				message="Deslocamento atualizado com sucesso!"
 				openState={successSnackbarIsOpen}
 				setOpenState={setSuccessSnackbarIsOpen}
 			/>
@@ -70,4 +160,4 @@ const ClientDetailsPage = () => {
 	);
 };
 
-export default ClientDetailsPage;
+export default DisplacementDetailsPage;

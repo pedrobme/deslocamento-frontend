@@ -9,10 +9,10 @@ import { DynamicSummaryTableProps } from "@/types/Tables";
 import DynamicTableBody from "./DynamicTableBody";
 import { Driver } from "@/types/Drivers";
 import { Vehicle } from "@/types/Vehicles";
-import { Displacement } from "@/types/Displacements";
+import { Displacement, TransformedDisplacement } from "@/types/Displacements";
 
 export default function DynamicSummaryTable<
-	T extends Client[] | Driver[] | Vehicle[] | Displacement[]
+	T extends Client[] | Driver[] | Vehicle[] | TransformedDisplacement[]
 >({ columns, rows, data }: DynamicSummaryTableProps<T>) {
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
