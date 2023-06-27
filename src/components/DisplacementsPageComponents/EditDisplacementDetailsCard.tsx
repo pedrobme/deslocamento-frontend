@@ -94,6 +94,18 @@ export default function EditDisplacementDetailsCard({
 		}
 	};
 
+	const handleDisplacementInitialDateAndTime = () => {
+		const displacementInitialDateAndTime = new Date(
+			displacementData.inicioDeslocamento
+		);
+		const toLoadInitialDate =
+			displacementInitialDateAndTime.toLocaleDateString("pt-BR");
+		const toLoadInitialTime =
+			displacementInitialDateAndTime.toLocaleTimeString("pt-BR");
+
+		return `${toLoadInitialDate} às ${toLoadInitialTime}`;
+	};
+
 	return (
 		<Card sx={{ minWidth: 275, width: "fit-content", margin: "auto" }}>
 			<CardContent>
@@ -144,7 +156,7 @@ export default function EditDisplacementDetailsCard({
 						Inicio:{" "}
 						<OutlinedInput
 							style={{ width: "fit-content", height: "40px" }}
-							value={displacementData?.inicioDeslocamento}
+							value={handleDisplacementInitialDateAndTime()}
 							disabled={true}
 						></OutlinedInput>
 					</Typography>
